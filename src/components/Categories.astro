@@ -1,0 +1,33 @@
+---
+import type { LandingT } from '../i18n/es';
+interface Props { t: LandingT }
+const { t } = Astro.props;
+---
+<section class="cats" id="abilities">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">{t.categories.eyebrow}</p>
+      <h2>{t.categories.h2}</h2>
+      <p>{t.categories.desc}</p>
+    </div>
+    <div class="cat-grid">
+      {t.categories.items.map(c => (
+        <div class="cat">
+          <div class="cat-icon">{c.icon}</div>
+          <div class="cat-name">{c.name}</div>
+          <div class="cat-count">{c.count}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.cats{padding:5rem 0}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:.85rem}
+.cat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.15rem;transition:border-color .2s,box-shadow .2s;cursor:default}
+.cat:hover{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.cat-icon{font-size:1.35rem;margin-bottom:.4rem}
+.cat-name{font-size:.845rem;font-weight:600}
+.cat-count{font-size:.72rem;color:var(--fog);font-family:var(--mono);margin-top:.15rem}
+</style>

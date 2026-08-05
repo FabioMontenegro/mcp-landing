@@ -1,0 +1,57 @@
+---
+import type { LandingT } from '../i18n/es';
+interface Props { t: LandingT }
+const { t } = Astro.props;
+const h = t.hero;
+---
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="eyebrow">{h.eyebrow}</p>
+      <h1>{h.h1}</h1>
+      <p>{h.subhead}</p>
+      <div class="hero-actions">
+        <a href="https://wordpress.org/plugins/enable-abilities-for-mcp/" class="btn btn-primary">{h.cta1}</a>
+        <a href="#abilities" class="btn btn-ghost">{h.cta2}</a>
+      </div>
+    </div>
+
+    <div class="terminal" aria-hidden="true">
+      <div class="tbar">
+        <span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span>
+        <span class="ttitle">{h.terminal.title}</span>
+      </div>
+      <div class="tbody">
+        {h.terminal.lines.map(line => {
+          if (line.type === 'blank') return <div>&nbsp;</div>;
+          if (line.type === 'cursor') return <div><span class="tp">→</span> <span class="cursor"></span></div>;
+          if (line.type === 'prompt') return <div><span class="tp">→</span> <span class="tc">{line.text}</span></div>;
+          if (line.type === 'ok')     return <div><span class="tok">{line.text}</span></div>;
+          if (line.type === 'url')    return <div class="turl">{line.text}</div>;
+          if (line.type === 'key')    return <div><span class="tk">{line.text}</span> <span class="tv">{line.value}</span></div>;
+          return null;
+        })}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.hero{padding:5rem 0 4.5rem;background-image:radial-gradient(var(--border) 1px,transparent 1px);background-size:26px 26px}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1100px;margin:0 auto;padding:0 1.5rem}
+.hero-text{display:flex;flex-direction:column;gap:1.1rem}
+h1{font-family:var(--mono);font-size:clamp(1.75rem,4vw,3rem);font-weight:700;line-height:1.12;text-wrap:balance;letter-spacing:-.025em;color:var(--ink)}
+.hero-text>p{font-size:1.025rem;color:var(--ink-2);max-width:46ch}
+.hero-actions{display:flex;gap:.75rem;flex-wrap:wrap;padding-top:.25rem}
+
+.terminal{background:#09111F;border-radius:var(--r-lg);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06);font-family:var(--mono);font-size:.78rem}
+.tbar{display:flex;align-items:center;gap:.45rem;padding:.7rem 1rem;background:#162032;border-bottom:1px solid rgba(255,255,255,.05)}
+.dot{width:11px;height:11px;border-radius:50%}
+.dr{background:#FF5F57}.dy{background:#FEBC2E}.dg{background:#28C840}
+.ttitle{margin-left:auto;font-size:.67rem;color:rgba(255,255,255,.28);letter-spacing:.05em}
+.tbody{padding:1.2rem 1.25rem 1.6rem;line-height:2;color:#8298B4}
+.tp{color:#06D6A0}.tc{color:#E2EBF8}.tk{color:#6CA5CF}.tv{color:#F4A461}
+.tok{color:#06D6A0;font-weight:600}.turl{color:#7A8FAA;font-size:.73rem}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.cursor{display:inline-block;width:7px;height:.85em;background:var(--accent);vertical-align:middle;margin-left:2px;animation:blink 1.1s step-end infinite}
+</style>

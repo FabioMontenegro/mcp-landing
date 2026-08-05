@@ -1,0 +1,20 @@
+---
+import type { LandingT } from '../i18n/es';
+interface Props { t: LandingT }
+const { t } = Astro.props;
+---
+<footer>
+  <div class="foot-inner">
+    <span>© 2025 Fabio Montenegro · <a href={t.footer.copyHref} style="color:inherit">technoar.co</a></span>
+    <div class="foot-links">
+      {t.footer.links.map(l => <a href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>)}
+    </div>
+  </div>
+</footer>
+
+<style>
+footer{padding:1.75rem 0;border-top:1px solid var(--border);font-size:.78rem;color:var(--fog)}
+.foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem;max-width:1100px;margin:0 auto;padding:0 1.5rem}
+.foot-links{display:flex;gap:1.5rem}
+.foot-links a:hover{color:var(--ink)}
+</style>

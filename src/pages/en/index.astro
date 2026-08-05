@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Hero from '../../components/Hero.astro';
+import Stats from '../../components/Stats.astro';
+import Compare from '../../components/Compare.astro';
+import Compat from '../../components/Compat.astro';
+import Categories from '../../components/Categories.astro';
+import HowItWorks from '../../components/HowItWorks.astro';
+import Cases from '../../components/Cases.astro';
+import CTA from '../../components/CTA.astro';
+import Footer from '../../components/Footer.astro';
+import { en } from '../../i18n/en';
+
+const t = en;
+---
+<Layout t={t}>
+  <Nav t={t} />
+  <Hero t={t} />
+  <Stats t={t} />
+  <Compare t={t} />
+  <Compat t={t} />
+  <Categories t={t} />
+  <HowItWorks t={t} />
+  <Cases t={t} />
+  <CTA t={t} />
+  <Footer t={t} />
+</Layout>

@@ -1,0 +1,33 @@
+---
+import type { LandingT } from '../i18n/es';
+interface Props { t: LandingT }
+const { t } = Astro.props;
+---
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo"><span class="sp">⚡</span> {t.nav.logo}</div>
+    <div class="nav-links">
+      {t.nav.links.map(l => (
+        <a href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener noreferrer' : undefined}>
+          {l.label}
+        </a>
+      ))}
+    </div>
+    <a href={t.nav.langSwitch.href} class="btn btn-ghost lang-switch">{t.nav.langSwitch.label}</a>
+    <a href="https://wordpress.org/plugins/enable-abilities-for-mcp/" class="btn btn-primary nav-cta">
+      {t.nav.cta}
+    </a>
+  </div>
+</nav>
+
+<style>
+nav{position:sticky;top:0;z-index:200;background:var(--paper);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;align-items:center;gap:1rem;padding:.875rem 1.5rem;max-width:1100px;margin:0 auto}
+.nav-logo{font-family:var(--mono);font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:.4rem;white-space:nowrap;flex-shrink:0}
+.sp{color:var(--accent)}
+.nav-links{display:flex;gap:1.5rem;margin-left:auto}
+.nav-links a{font-size:.845rem;color:var(--ink-2);transition:color .15s}
+.nav-links a:hover{color:var(--ink)}
+.lang-switch{font-size:.78rem;padding:.4rem .85rem}
+.nav-cta{white-space:nowrap}
+</style>

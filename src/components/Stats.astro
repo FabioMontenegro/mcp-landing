@@ -1,0 +1,23 @@
+---
+import type { LandingT } from '../i18n/es';
+interface Props { t: LandingT }
+const { t } = Astro.props;
+---
+<section class="stats">
+  <div class="stats-grid">
+    {t.stats.map(s => (
+      <div>
+        <div class:list={['stat-n', { 'stat-accent': s.accent }]}>{s.num}</div>
+        <div class="stat-l">{s.label}</div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+.stats{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2.25rem 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center;max-width:900px;margin:0 auto;padding:0 1.5rem}
+.stat-n{font-family:var(--mono);font-size:2.1rem;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
+.stat-accent{color:var(--accent)}
+.stat-l{font-size:.73rem;color:var(--fog);margin-top:.35rem;letter-spacing:.05em;text-transform:uppercase}
+</style>

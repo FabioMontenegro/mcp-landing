@@ -1,0 +1,150 @@
+import type { LandingT } from './es';
+
+export const en: LandingT = {
+  lang: 'en',
+  dir: 'ltr',
+  meta: {
+    title: 'Enable Abilities for MCP — Real AI access to your WordPress',
+    description: '68 abilities so Claude, Copilot, Cursor or any MCP client can read and write your WordPress directly.',
+  },
+  nav: {
+    logo: 'Enable Abilities for MCP',
+    links: [
+      { label: 'Abilities', href: '#abilities' },
+      { label: 'Installation', href: '#how' },
+      { label: 'Use cases', href: '#cases' },
+      { label: 'WordPress.org', href: 'https://wordpress.org/plugins/enable-abilities-for-mcp/', external: true },
+    ],
+    cta: 'Install free',
+    langSwitch: { label: 'Español', href: '/' },
+  },
+  hero: {
+    eyebrow: 'WordPress × MCP',
+    h1: 'What you ask your AI to do, it now does inside WordPress.',
+    subhead: '68 abilities so Claude, Copilot, Cursor or any MCP client can read and write your site directly — no external APIs, no copy-paste.',
+    cta1: 'Install free on WordPress.org',
+    cta2: 'View all abilities →',
+    terminal: {
+      title: 'mcp · altovoltage.local',
+      lines: [
+        { type: 'prompt', text: 'ewpa/create-post' },
+        { type: 'key', text: '  title:', value: '"10 SEO trends for 2025"' },
+        { type: 'key', text: '  status:', value: 'publish' },
+        { type: 'key', text: '  category:', value: 'seo' },
+        { type: 'blank' },
+        { type: 'ok', text: '✓ Post created — ID 4821' },
+        { type: 'url', text: '  https://yoursite.com/10-seo-trends-2025' },
+        { type: 'blank' },
+        { type: 'prompt', text: 'ewpa/ld-get-user-progress' },
+        { type: 'key', text: '  user_id:', value: '42  course_id: 1842' },
+        { type: 'blank' },
+        { type: 'ok', text: '✓ enrolled: true · 68% completed' },
+        { type: 'blank' },
+        { type: 'cursor' },
+      ],
+    },
+  },
+  stats: [
+    { num: '15K+',  label: 'Total downloads' },
+    { num: '2K+',   label: 'Active sites' },
+    { num: '68+',   label: 'Abilities' },
+    { num: '★ 5/5', label: 'Rating on wp.org', accent: true },
+  ],
+  compare: {
+    eyebrow: 'The problem',
+    h2: 'The AI knows. The plugin lets it act.',
+    without: {
+      label: 'Without the plugin',
+      items: [
+        'You ask it to write the post. You copy the text.',
+        'You paste into WordPress. You set up SEO manually.',
+        'You ask about a user. You look them up in the admin.',
+        'Every action goes through your keyboard.',
+      ],
+    },
+    with: {
+      label: 'With the plugin',
+      items: [
+        'Tell it to publish. It publishes.',
+        'Updates meta titles across 50 posts at once.',
+        'Checks a student\'s progress in LearnDash.',
+        'Your job is to review. The AI executes.',
+      ],
+    },
+  },
+  compat: {
+    label: 'Works with any MCP client',
+    clients: ['Claude', 'GitHub Copilot', 'Cursor', 'Windsurf', 'Continue', 'Codex CLI', 'Any HTTP MCP client'],
+  },
+  categories: {
+    eyebrow: '68 abilities across 15 categories',
+    h2: 'Every area of your WordPress, covered.',
+    desc: 'From creating posts to managing courses or pulling SEO analysis. Read abilities are auto-enabled on install. Write abilities are opt-in from the admin panel.',
+    items: [
+      { icon: '📝', name: 'Posts & Pages',       count: '8 abilities' },
+      { icon: '🖼️', name: 'Media',              count: '4 abilities' },
+      { icon: '💬', name: 'Comments',            count: '3 abilities' },
+      { icon: '👤', name: 'Users',               count: '4 abilities' },
+      { icon: '🗂️', name: 'Custom Post Types',  count: '8 abilities' },
+      { icon: '🏷️', name: 'Taxonomies',         count: '4 abilities' },
+      { icon: '🔧', name: 'Post Meta / ACF',     count: '2 abilities' },
+      { icon: '🛒', name: 'WooCommerce',         count: '8 abilities' },
+      { icon: '🎨', name: 'Elementor',           count: '3 abilities' },
+      { icon: '🎓', name: 'LearnDash',           count: '6 abilities' },
+      { icon: '🔍', name: 'SEO',                 count: 'Rank Math · Yoast · SEOPress' },
+      { icon: '⚡', name: 'JetEngine',           count: '5 abilities' },
+      { icon: '🛠️', name: 'Utilities',          count: '3 abilities' },
+      { icon: '🧹', name: 'Cache',              count: 'WP Rocket · LiteSpeed · W3TC' },
+      { icon: '🤖', name: 'AI Readiness',        count: 'llms.txt included' },
+    ],
+  },
+  how: {
+    eyebrow: 'Installation',
+    h2: 'Ready in under 5 minutes.',
+    steps: [
+      {
+        num: '01',
+        h3: 'Install the plugins',
+        p: 'Install <strong>MCP Adapter</strong> (official WordPress plugin) and then <strong>Enable Abilities for MCP</strong> from WordPress.org. Both install in seconds from the admin.',
+      },
+      {
+        num: '02',
+        h3: 'Choose your auth method',
+        p: 'The panel offers two options: <strong>Bearer Token</strong> (dedicated API key, SHA-256) or WordPress <strong>Application Password</strong>. Configure which abilities you want to expose.',
+      },
+      {
+        num: '03',
+        h3: 'Configure your MCP client',
+        p: 'The panel generates the config block ready to paste into Claude Desktop, Claude Code, Cursor, Codex CLI and more. The connection uses <code>npx mcp-remote</code> as the bridge — no prior install needed.',
+      },
+    ],
+  },
+  cases: {
+    eyebrow: 'Use cases',
+    h2: 'What you can ask for.',
+    desc: 'Real examples of what your AI assistant can do with the plugin active.',
+    items: [
+      { q: 'Publish this draft tomorrow at 9am',                                    a: 'Post scheduled directly in WordPress' },
+      { q: 'How many WooCommerce products are out of stock?',                       a: 'Inventory checked without opening the admin' },
+      { q: 'Show me Juan\'s progress in the Digital Marketing course',             a: 'LearnDash data in seconds' },
+      { q: 'Update the meta title of all posts in the SEO category',               a: 'Bulk update from a single request' },
+      { q: 'Run a fresh SEO analysis on post ID 4821',                             a: 'SEOPress executed directly from chat' },
+      { q: 'Clear the cache for the entire site',                                  a: 'WP Rocket, LiteSpeed or W3TC cleared without opening the panel' },
+    ],
+  },
+  cta: {
+    h2: 'Free. Open source. No subscription.',
+    p: '15,000+ downloads and 2,000+ active sites on WordPress.org.',
+    btn: 'Install from WordPress.org →',
+    meta: 'WordPress 6.9+ · PHP 8.0+ · GPLv2 or later',
+  },
+  footer: {
+    copy: '© 2025 Fabio Montenegro · technoar.co',
+    copyHref: 'https://technoar.co',
+    links: [
+      { label: 'WordPress.org', href: 'https://wordpress.org/plugins/enable-abilities-for-mcp/' },
+      { label: 'GitHub',        href: 'https://github.com/FabioMontenegro/enable-abilities-for-mcp' },
+      { label: 'LinkedIn',      href: 'https://www.linkedin.com/in/fabio-montenegro/' },
+    ],
+  },
+};

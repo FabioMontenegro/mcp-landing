@@ -1,0 +1,20 @@
+---
+import type { LandingT } from '../i18n/es';
+interface Props { t: LandingT }
+const { t } = Astro.props;
+---
+<section class="compat">
+  <div class="wrap">
+    <p class="compat-label">{t.compat.label}</p>
+    <div class="chips">
+      {t.compat.clients.map(c => <span class="chip">{c}</span>)}
+    </div>
+  </div>
+</section>
+
+<style>
+.compat{padding:3.25rem 0;border-bottom:1px solid var(--border);text-align:center}
+.compat-label{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fog);margin-bottom:1.25rem}
+.chips{display:flex;justify-content:center;flex-wrap:wrap;gap:.6rem}
+.chip{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.35rem 1rem;font-size:.8rem;font-weight:600}
+</style>

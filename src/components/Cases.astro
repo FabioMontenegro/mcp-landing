@@ -1,0 +1,31 @@
+---
+import type { LandingT } from '../i18n/es';
+interface Props { t: LandingT }
+const { t } = Astro.props;
+---
+<section class="cases" id="cases">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">{t.cases.eyebrow}</p>
+      <h2>{t.cases.h2}</h2>
+      <p>{t.cases.desc}</p>
+    </div>
+    <div class="cases-grid">
+      {t.cases.items.map(c => (
+        <div class="case">
+          <div class="case-q">"{c.q}"</div>
+          <div class="case-a">{c.a}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.cases{padding:5rem 0}
+.cases-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2.75rem}
+.case{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem 1.5rem}
+.case-q{font-family:var(--mono);font-size:.78rem;color:var(--ink-2);margin-bottom:.75rem;padding:.5rem .75rem;background:var(--paper);border-radius:4px;border-left:3px solid var(--accent);line-height:1.5}
+.case-a{font-size:.8rem;color:var(--fog);display:flex;gap:.4rem;align-items:center}
+.case-a::before{content:'→';color:var(--accent);font-family:var(--mono);flex-shrink:0}
+</style>

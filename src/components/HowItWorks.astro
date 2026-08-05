@@ -1,0 +1,33 @@
+---
+import type { LandingT } from '../i18n/es';
+interface Props { t: LandingT }
+const { t } = Astro.props;
+const h = t.how;
+---
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">{h.eyebrow}</p>
+      <h2>{h.h2}</h2>
+    </div>
+    <div class="steps">
+      {h.steps.map(s => (
+        <div class="step">
+          <div class="step-n">{s.num}</div>
+          <h3>{s.h3}</h3>
+          <p set:html={s.p} />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.how{padding:5rem 0;background:var(--surface)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;margin-top:3rem}
+.step-n{font-family:var(--mono);font-size:3rem;font-weight:700;color:var(--accent);opacity:.2;line-height:1;margin-bottom:.5rem}
+.step h3{font-size:1rem;font-weight:600;margin-bottom:.4rem}
+.step p{font-size:.88rem;color:var(--ink-2)}
+.step :global(code){font-size:.75rem;background:var(--paper);padding:.1rem .35rem;border-radius:3px;font-family:var(--mono)}
+.step :global(strong){font-weight:600;color:var(--ink)}
+</style>
