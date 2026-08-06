@@ -86,7 +86,7 @@ To add a new language: create `src/i18n/fr.ts` implementing `LandingT`, add `src
 - **Auth methods:** Bearer Token (SHA-256 API Key) OR Application Password
 - **Connection:** via `npx mcp-remote` bridge — NOT direct URL paste
 - **License:** GPLv2 or later (free, open source)
-- **Categories:** 15 ability categories, 71+ total abilities
+- **Categories:** 15 ability categories — 68 abilities own to the plugin + 3 WordPress-native Core abilities (core/get-site-info, core/get-user-info, core/get-environment-info) toggleable from its admin = 71 total. Marketing copy uses 68 (the plugin's own); do not sum them as "71 plugin abilities".
 
 ## pnpm Configuration
 
