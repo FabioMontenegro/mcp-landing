@@ -52,8 +52,8 @@ src/
     CTA.astro
     Footer.astro
   pages/
-    index.astro        # ES route (/)
-    en/index.astro     # EN route (/en/)
+    index.astro        # EN route (/) — default language
+    es/index.astro     # ES route (/es/)
 ```
 
 ## i18n Pattern
@@ -70,11 +70,13 @@ const { t } = Astro.props;
 
 Pages pass the locale object down:
 ```astro
-// src/pages/index.astro  → import { es } from '../i18n/es'; const t = es;
-// src/pages/en/index.astro → import { en } from '../../i18n/en'; const t = en;
+// src/pages/index.astro  → import { en } from '../i18n/en'; const t = en;
+// src/pages/es/index.astro → import { es } from '../../i18n/es'; const t = es;
 ```
 
-To add a new language: create `src/i18n/fr.ts` implementing `LandingT`, add `src/pages/fr/index.astro`.
+English is the default language at `/`; Spanish lives at `/es/`. The old `/en/` URL redirects to `/` (see `redirects` in `astro.config.mjs`). The Nav renders an EN/ES pill toggle driven by `t.lang`. Note: `es.ts` must NOT use `as const` — `LandingT` needs widened string types so other locales can implement it.
+
+To add a new language: create `src/i18n/fr.ts` implementing `LandingT`, add `src/pages/fr/index.astro`, and add the option to the Nav toggle.
 
 ## Plugin Facts (keep accurate)
 

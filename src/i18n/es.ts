@@ -14,7 +14,6 @@ export const es = {
       { label: 'WordPress.org', href: 'https://wordpress.org/plugins/enable-abilities-for-mcp/', external: true },
     ],
     cta: 'Instalar gratis',
-    langSwitch: { label: 'English', href: '/en/' },
   },
   hero: {
     eyebrow: 'WordPress × MCP',
@@ -145,6 +144,6 @@ export const es = {
       { label: 'LinkedIn',      href: 'https://www.linkedin.com/in/fabio-montenegro/' },
     ],
   },
-} as const;
+};
 
 export type LandingT = typeof es;

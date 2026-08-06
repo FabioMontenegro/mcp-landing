@@ -2,7 +2,7 @@
 
 Marketing site for [Enable Abilities for MCP](https://wordpress.org/plugins/enable-abilities-for-mcp/), a free, open-source WordPress plugin (GPLv2) that lets Claude, Copilot, Cursor and any MCP-compatible client read and write directly on a WordPress site — 68+ abilities across 15 categories, 15K+ downloads, 5/5 rating on WordPress.org.
 
-**Live:** [mcp.fabiomontenegro.com](https://mcp.fabiomontenegro.com) (Spanish) · [/en/](https://mcp.fabiomontenegro.com/en/) (English)
+**Live:** [mcp.fabiomontenegro.com](https://mcp.fabiomontenegro.com) (English) · [/es/](https://mcp.fabiomontenegro.com/es/) (Spanish)
 
 ![Enable Abilities for MCP landing page](docs/screenshot.png)
 
@@ -32,7 +32,7 @@ src/
   i18n/          # es.ts (source of LandingT), en.ts
   layouts/       # Layout.astro — design tokens, dark/light theme
   components/    # Hero, Stats, Compare, Categories, Cases, ...
-  pages/         # index.astro (ES), en/index.astro (EN)
+  pages/         # index.astro (EN, default), es/index.astro (ES)
 ```
 
 ## Development

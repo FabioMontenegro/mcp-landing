@@ -16,7 +16,6 @@ export const en: LandingT = {
       { label: 'WordPress.org', href: 'https://wordpress.org/plugins/enable-abilities-for-mcp/', external: true },
     ],
     cta: 'Install free',
-    langSwitch: { label: 'Español', href: '/' },
   },
   hero: {
     eyebrow: 'WordPress × MCP',

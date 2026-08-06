@@ -2,6 +2,7 @@
 import type { LandingT } from '../i18n/es';
 interface Props { t: LandingT }
 const { t } = Astro.props;
+const isEn = t.lang === 'en';
 ---
 <nav>
   <div class="nav-inner">
@@ -13,7 +14,10 @@ const { t } = Astro.props;
         </a>
       ))}
     </div>
-    <a href={t.nav.langSwitch.href} class="btn btn-ghost lang-switch">{t.nav.langSwitch.label}</a>
+    <div class="lang-toggle" aria-label="Language">
+      <a href="/" class:list={['lang-opt', { active: isEn }]} aria-current={isEn ? 'page' : undefined} lang="en" hreflang="en">EN</a>
+      <a href="/es/" class:list={['lang-opt', { active: !isEn }]} aria-current={!isEn ? 'page' : undefined} lang="es" hreflang="es">ES</a>
+    </div>
     <a href="https://wordpress.org/plugins/enable-abilities-for-mcp/" class="btn btn-primary nav-cta">
       {t.nav.cta}
     </a>
@@ -28,6 +32,10 @@ nav{position:sticky;top:0;z-index:200;background:var(--paper);border-bottom:1px 
 .nav-links{display:flex;gap:1.5rem;margin-left:auto}
 .nav-links a{font-size:.845rem;color:var(--ink-2);transition:color .15s}
 .nav-links a:hover{color:var(--ink)}
-.lang-switch{font-size:.78rem;padding:.4rem .85rem}
+.lang-toggle{display:flex;align-items:center;gap:2px;padding:3px;border:1px solid var(--border);border-radius:999px;font-family:var(--mono);flex-shrink:0}
+.lang-opt{font-size:.68rem;font-weight:700;letter-spacing:.08em;line-height:1;padding:.38rem .62rem;border-radius:999px;color:var(--fog);transition:color .15s,background .18s,box-shadow .25s}
+.lang-opt:hover{color:var(--ink)}
+.lang-opt.active{background:var(--accent);color:#0D1421;box-shadow:0 0 10px rgba(6,214,160,.35)}
+.lang-opt.active:hover{background:var(--accent-h);color:#0D1421}
 .nav-cta{white-space:nowrap}
 </style>
