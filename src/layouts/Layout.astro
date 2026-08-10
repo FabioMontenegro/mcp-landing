@@ -23,6 +23,15 @@ const { t } = Astro.props;
   </head>
   <body>
     <slot />
+    <script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
+    <script>
+      kofiWidgetOverlay.draw('fabiomontenegro', {
+        'type': 'floating-chat',
+        'floating-chat.donateButton.text': 'Support me',
+        'floating-chat.donateButton.background-color': '#ffffff',
+        'floating-chat.donateButton.text-color': '#323842',
+      });
+    </script>
   </body>
 </html>
 
