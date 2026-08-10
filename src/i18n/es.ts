@@ -112,7 +112,7 @@ export const es = {
       {
         num: '03',
         h3: 'Configura tu cliente MCP',
-        p: 'El panel genera el bloque de configuración listo para pegar en Claude Desktop, Claude Code, Cursor, Codex CLI y más. La conexión usa <code>npx mcp-remote</code> como puente — sin instalación previa.',
+        p: 'El panel genera el bloque de configuración listo para pegar en Claude Desktop, Claude Code, Cursor, Codex CLI y más. Conecta con el <strong>conector OAuth de claude.ai</strong> (sin configuración) o con <code>npx mcp-remote</code> como puente — sin instalación previa.',
       },
     ],
   },

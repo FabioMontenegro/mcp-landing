@@ -5,7 +5,7 @@ const { t } = Astro.props;
 ---
 <footer>
   <div class="foot-inner">
-    <span>© 2025 Fabio Montenegro · <a href={t.footer.copyHref} style="color:inherit">technoar.co</a></span>
+    <span>© {new Date().getFullYear()} Fabio Montenegro · <a href={t.footer.copyHref} style="color:inherit">technoar.co</a></span>
     <div class="foot-links">
       {t.footer.links.map(l => <a href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>)}
     </div>
