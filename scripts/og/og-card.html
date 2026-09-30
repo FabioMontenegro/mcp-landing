@@ -13,8 +13,9 @@
   .card::after{content:'';position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--accent)}
   .brand{font-family:var(--mono);font-size:22px;font-weight:700;display:flex;gap:10px;align-items:center}
   .brand b{color:var(--accent)}
-  h1{font-size:74px;line-height:1.02;font-weight:800;letter-spacing:-.02em;margin:26px 0 22px}
-  .sub{font-size:26px;line-height:1.4;color:var(--ink-2);max-width:26ch}
+  h1{font-size:60px;line-height:1.04;font-weight:800;letter-spacing:-.02em;margin:24px 0 18px}
+  .verse{display:flex;flex-direction:column;gap:4px;padding-left:20px;border-left:4px solid var(--accent)}
+  .verse span{font-size:29px;line-height:1.3;font-weight:600;color:var(--ink-2)}
   .foot{margin-top:34px;font-family:var(--mono);font-size:19px;color:var(--fog);display:flex;gap:14px;align-items:center}
   .foot span{color:var(--accent)}
   .diagram{display:flex;flex-direction:column;align-items:center;gap:14px;padding:34px 28px;background:var(--surface);border:1px solid var(--border);border-radius:22px}
@@ -36,7 +37,7 @@
   <div>
     <div class="brand"><b>⚡</b> Enable Abilities for MCP</div>
     <h1 id="h1"></h1>
-    <p class="sub" id="sub"></p>
+    <p class="verse" id="verse"></p>
     <div class="foot"><span id="free"></span> · mcp.fabiomontenegro.com</div>
   </div>
   <div class="diagram">
@@ -53,11 +54,15 @@
 </div>
 <script>
   const T = {
-    en: { h1:'One plugin to rule them all.', sub:'Your AI controls WordPress and every plugin that speaks the Abilities API. One connection.', free:'Free & open source', builtin:'built-in abilities', any:'Any Abilities API plugin', hub:'One connection · one dashboard', more:'and more' },
-    es: { h1:'Un plugin para gobernarlos a todos.', sub:'Tu IA controla WordPress y cada plugin compatible con la Abilities API. Una sola conexión.', free:'Gratis y open source', builtin:'abilities incluidas', any:'Cualquier plugin con Abilities API', hub:'Una conexión · un panel', more:'y más' },
+    en: { h1:'One plugin to rule them all,', verse:['one plugin to find them,','one connection to bring them all','and in one dashboard bind them.'], free:'Free & open source', builtin:'built-in abilities', any:'Any Abilities API plugin', hub:'One connection · one dashboard', more:'and more' },
+    es: { h1:'Un plugin para gobernarlos a todos,', verse:['un plugin para encontrarlos,','una conexión para atraerlos a todos','y en un solo panel controlarlos.'], free:'Gratis y open source', builtin:'abilities incluidas', any:'Cualquier plugin con Abilities API', hub:'Una conexión · un panel', more:'y más' },
   };
   const t = T[new URLSearchParams(location.search).get('lang') || 'en'];
-  for (const [k, v] of Object.entries(t)) document.getElementById(k).textContent = v;
+  for (const [k, v] of Object.entries(t)) {
+    const el = document.getElementById(k);
+    if (Array.isArray(v)) v.forEach((line) => el.appendChild(Object.assign(document.createElement('span'), { textContent: line })));
+    else el.textContent = v;
+  }
 </script>
 </body>
 </html>
