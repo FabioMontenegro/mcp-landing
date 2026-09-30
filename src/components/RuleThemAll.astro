@@ -1,0 +1,72 @@
+---
+import type { LandingT } from '../i18n/es';
+import { ewpaCount } from '../data/sections';
+interface Props { t: LandingT }
+const { t } = Astro.props;
+const r = t.ruleAll;
+---
+<section class="rule" id="third-party">
+  <div class="wrap rule-inner">
+    <div class="rule-copy">
+      <p class="eyebrow">{r.eyebrow}</p>
+      <h2>{r.h2}</h2>
+      <p class="rule-p">{r.p}</p>
+      <blockquote class="rule-verse">
+        {r.verse.map((line) => <span>{line}</span>)}
+      </blockquote>
+      <ul class="rule-points">
+        {r.points.map((pt) => <li>{pt}</li>)}
+      </ul>
+    </div>
+
+    <div class="rule-diagram" aria-label={r.diagramLabel} role="img">
+      <ul class="rule-sources" aria-hidden="true">
+        <li><strong>{ewpaCount}</strong> {r.sources.builtIn}</li>
+        <li>Fluent Forms</li>
+        <li>{r.sources.any}</li>
+      </ul>
+      <div class="rule-arrow" aria-hidden="true"></div>
+      <div class="rule-hub" aria-hidden="true">
+        <span class="rule-hub-icon">⚡</span>
+        <span class="rule-hub-name">Enable Abilities for MCP</span>
+        <span class="rule-hub-sub">{r.hubSub}</span>
+      </div>
+      <div class="rule-arrow" aria-hidden="true"></div>
+      <ul class="rule-clients" aria-hidden="true">
+        <li>Claude</li>
+        <li>ChatGPT</li>
+        <li>Cursor</li>
+        <li>{r.clientsMore}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+.rule{padding:5rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.rule-inner{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:3rem;align-items:center}
+.rule-copy h2{font-size:clamp(1.6rem,3.4vw,2.5rem);font-weight:800;line-height:1.15;text-wrap:balance;margin:.5rem 0 .9rem}
+.rule-p{color:var(--ink-2);max-width:54ch}
+.rule-verse{margin:1.5rem 0;padding:.9rem 1.1rem;border-left:3px solid var(--accent);background:var(--surface);border-radius:0 var(--r) var(--r) 0;font-family:var(--mono);font-size:.78rem;line-height:1.7;color:var(--ink-2);display:flex;flex-direction:column}
+.rule-verse span:first-child{color:var(--ink);font-weight:600}
+.rule-points{display:flex;flex-direction:column;gap:.45rem}
+.rule-points li{font-size:.9rem;color:var(--ink-2);display:flex;gap:.55rem}
+.rule-points li::before{content:'→';color:var(--accent);font-family:var(--mono);flex-shrink:0}
+
+.rule-diagram{display:flex;flex-direction:column;align-items:center;gap:.6rem;padding:1.75rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg)}
+.rule-sources,.rule-clients{display:flex;flex-wrap:wrap;justify-content:center;gap:.45rem}
+.rule-sources li,.rule-clients li{font-size:.78rem;padding:.35rem .75rem;border:1px solid var(--border);border-radius:999px;background:var(--paper);color:var(--ink-2)}
+.rule-sources li strong{color:var(--ink);font-variant-numeric:tabular-nums}
+.rule-sources li:last-child{border-style:dashed}
+.rule-clients li{font-family:var(--mono);font-size:.72rem}
+.rule-arrow{width:1px;height:26px;background:linear-gradient(var(--border),var(--accent));position:relative}
+.rule-arrow::after{content:'';position:absolute;bottom:-3px;left:-4px;border:4.5px solid transparent;border-top-color:var(--accent)}
+.rule-hub{display:flex;flex-direction:column;align-items:center;gap:.15rem;padding:1rem 1.5rem;border:1.5px solid var(--accent);border-radius:var(--r-lg);box-shadow:0 0 0 5px var(--accent-dim);background:var(--paper);text-align:center}
+.rule-hub-icon{color:var(--accent);font-size:1.1rem}
+.rule-hub-name{font-family:var(--mono);font-size:.82rem;font-weight:700}
+.rule-hub-sub{font-size:.72rem;color:var(--fog)}
+
+@media(max-width:860px){
+  .rule-inner{grid-template-columns:minmax(0,1fr);gap:2rem}
+}
+</style>

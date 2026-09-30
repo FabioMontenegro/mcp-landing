@@ -141,6 +141,26 @@ export const en: LandingT = {
       { q: 'Clear the cache for the entire site',                                  a: 'WP Rocket, LiteSpeed or W3TC cleared without opening the panel' },
     ],
   },
+  ruleAll: {
+    eyebrow: 'Third-party abilities',
+    h2: 'One plugin to rule them all.',
+    p: 'More and more plugins, like Fluent Forms, register their own abilities with the WordPress Abilities API. Enable Abilities for MCP finds them automatically and lists them in the same dashboard, grouped by plugin, with the same on/off toggles. Your AI gets one connection, not one MCP server per plugin.',
+    verse: [
+      'One plugin to rule them all,',
+      'one plugin to find them,',
+      'one connection to bring them all',
+      'and in one dashboard bind them.',
+    ],
+    points: [
+      'No extra MCP server to install or configure per plugin',
+      'One authentication: OAuth, Bearer Token or Application Password',
+      'Turn off any third-party ability and it stops being exposed site-wide',
+    ],
+    diagramLabel: 'Built-in abilities, Fluent Forms abilities and any Abilities API plugin reach Claude, ChatGPT and Cursor through a single connection.',
+    sources: { builtIn: 'built-in abilities', any: 'Any Abilities API plugin' },
+    hubSub: 'One connection · one dashboard',
+    clientsMore: 'and more',
+  },
   reviews: {
     eyebrow: 'Loved on WordPress.org',
     h2: '12 reviews. All 5 stars.',

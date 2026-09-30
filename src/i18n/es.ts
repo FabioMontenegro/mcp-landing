@@ -139,6 +139,26 @@ export const es = {
       { q: 'Limpia el cache de todo el sitio',                                      a: 'WP Rocket, LiteSpeed o W3TC vaciados sin abrir el panel' },
     ],
   },
+  ruleAll: {
+    eyebrow: 'Abilities de otros plugins',
+    h2: 'Un plugin para gobernarlos a todos.',
+    p: 'Cada vez más plugins, como Fluent Forms, registran sus propias abilities con la Abilities API de WordPress. Enable Abilities for MCP las descubre automáticamente y las muestra en el mismo panel, agrupadas por plugin y con los mismos interruptores. Tu IA usa una sola conexión, no un servidor MCP por cada plugin.',
+    verse: [
+      'Un plugin para gobernarlos a todos,',
+      'un plugin para encontrarlos,',
+      'una conexión para atraerlos a todos',
+      'y en un solo panel controlarlos.',
+    ],
+    points: [
+      'Sin instalar ni configurar un servidor MCP por plugin',
+      'Una sola autenticación: OAuth, Bearer Token o Application Password',
+      'Desactiva cualquier ability de terceros y deja de estar expuesta en todo el sitio',
+    ],
+    diagramLabel: 'Abilities del plugin, de Fluent Forms y de cualquier plugin compatible con la Abilities API llegan a Claude, ChatGPT y Cursor a través de una sola conexión.',
+    sources: { builtIn: 'abilities incluidas', any: 'Cualquier plugin con Abilities API' },
+    hubSub: 'Una conexión · un panel',
+    clientsMore: 'y más',
+  },
   reviews: {
     eyebrow: 'Amado en WordPress.org',
     h2: '12 reseñas. Todas de 5 estrellas.',
