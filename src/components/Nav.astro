@@ -1,7 +1,7 @@
 ---
 import type { LandingT } from '../i18n/es';
-interface Props { t: LandingT }
-const { t } = Astro.props;
+interface Props { t: LandingT; path?: string }
+const { t, path = '' } = Astro.props;
 const isEn = t.lang === 'en';
 ---
 <nav>
@@ -15,8 +15,8 @@ const isEn = t.lang === 'en';
       ))}
     </div>
     <div class="lang-toggle" aria-label="Language">
-      <a href="/" class:list={['lang-opt', { active: isEn }]} aria-current={isEn ? 'page' : undefined} lang="en" hreflang="en">EN</a>
-      <a href="/es/" class:list={['lang-opt', { active: !isEn }]} aria-current={!isEn ? 'page' : undefined} lang="es" hreflang="es">ES</a>
+      <a href={`/${path}`} class:list={['lang-opt', { active: isEn }]} aria-current={isEn ? 'page' : undefined} lang="en" hreflang="en">EN</a>
+      <a href={`/es/${path}`} class:list={['lang-opt', { active: !isEn }]} aria-current={!isEn ? 'page' : undefined} lang="es" hreflang="es">ES</a>
     </div>
     <a href="https://wordpress.org/plugins/enable-abilities-for-mcp/" class="btn btn-primary nav-cta">
       {t.nav.cta}

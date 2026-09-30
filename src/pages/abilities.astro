@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Directory from '../components/Directory.astro';
+import CTA from '../components/CTA.astro';
+import Footer from '../components/Footer.astro';
+import { en } from '../i18n/en';
+
+const t = en;
+---
+<Layout t={t} title={t.directory.metaTitle} description={t.directory.metaDescription} path="abilities/">
+  <Nav t={t} path="abilities/" />
+  <Directory t={t} />
+  <CTA t={t} />
+  <Footer t={t} />
+</Layout>

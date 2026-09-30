@@ -3,9 +3,16 @@ import type { LandingT } from '../i18n/es';
 
 interface Props {
   t: LandingT;
+  title?: string;
+  description?: string;
+  /** Page path without leading slash or language prefix, e.g. "abilities/". Empty for home. */
+  path?: string;
 }
 
-const { t } = Astro.props;
+const { t, title = t.meta.title, description = t.meta.description, path = '' } = Astro.props;
+const origin = 'https://mcp.fabiomontenegro.com';
+const enUrl = `${origin}/${path}`;
+const esUrl = `${origin}/es/${path}`;
 ---
 
 <!doctype html>
@@ -13,12 +20,12 @@ const { t } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{t.meta.title}</title>
-    <meta name="description" content={t.meta.description} />
-    <link rel="canonical" href={t.lang === 'es' ? 'https://mcp.fabiomontenegro.com/es/' : 'https://mcp.fabiomontenegro.com/'} />
-    <link rel="alternate" hreflang="en" href="https://mcp.fabiomontenegro.com/" />
-    <link rel="alternate" hreflang="es" href="https://mcp.fabiomontenegro.com/es/" />
-    <link rel="alternate" hreflang="x-default" href="https://mcp.fabiomontenegro.com/" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={t.lang === 'es' ? esUrl : enUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="es" href={esUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
@@ -51,21 +58,34 @@ const { t } = Astro.props;
   --mono: ui-monospace,'SF Mono','Cascadia Code','Fira Code',Menlo,'Courier New',monospace;
   --sans: system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   --r: 8px; --r-lg: 14px;
+  /* Ability type pills (semantic, separate from the accent) */
+  --t-read-fg:#0B6B4E;  --t-read-bg:rgba(11,107,78,.10);  --t-read-bd:rgba(11,107,78,.28);
+  --t-write-fg:#8A4B00; --t-write-bg:rgba(217,119,6,.12); --t-write-bd:rgba(180,95,0,.32);
+  --t-destr-fg:#B42318; --t-destr-bg:rgba(220,38,38,.09); --t-destr-bd:rgba(180,35,24,.30);
 }
 @media(prefers-color-scheme:dark){:root{
   --ink:#DDE4F0; --ink-2:#96A8BE; --fog:#59697D;
   --paper:#0B1120; --surface:#111D2E; --border:rgba(255,255,255,.07);
   --sh:0 1px 4px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+  --t-read-fg:#5EE0B5;  --t-read-bg:rgba(94,224,181,.10);  --t-read-bd:rgba(94,224,181,.28);
+  --t-write-fg:#F5B454; --t-write-bg:rgba(245,180,84,.10); --t-write-bd:rgba(245,180,84,.30);
+  --t-destr-fg:#FF8A80; --t-destr-bg:rgba(255,138,128,.10); --t-destr-bd:rgba(255,138,128,.30);
 }}
 :root[data-theme="dark"]{
   --ink:#DDE4F0; --ink-2:#96A8BE; --fog:#59697D;
   --paper:#0B1120; --surface:#111D2E; --border:rgba(255,255,255,.07);
   --sh:0 1px 4px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+  --t-read-fg:#5EE0B5;  --t-read-bg:rgba(94,224,181,.10);  --t-read-bd:rgba(94,224,181,.28);
+  --t-write-fg:#F5B454; --t-write-bg:rgba(245,180,84,.10); --t-write-bd:rgba(245,180,84,.30);
+  --t-destr-fg:#FF8A80; --t-destr-bg:rgba(255,138,128,.10); --t-destr-bd:rgba(255,138,128,.30);
 }
 :root[data-theme="light"]{
   --ink:#0D1421; --ink-2:#3C4F64; --fog:#8A97AA;
   --paper:#F4F6FA; --surface:#FFFFFF; --border:rgba(13,20,33,.09);
   --sh:0 1px 4px rgba(13,20,33,.07),0 4px 16px rgba(13,20,33,.05);
+  --t-read-fg:#0B6B4E;  --t-read-bg:rgba(11,107,78,.10);  --t-read-bd:rgba(11,107,78,.28);
+  --t-write-fg:#8A4B00; --t-write-bg:rgba(217,119,6,.12); --t-write-bd:rgba(180,95,0,.32);
+  --t-destr-fg:#B42318; --t-destr-bg:rgba(220,38,38,.09); --t-destr-bd:rgba(180,35,24,.30);
 }
 
 /* ── Reset ──────────────────────────────── */
@@ -100,6 +120,9 @@ ul{list-style:none}
 }
 @media(max-width:600px){
   .nav-links{display:none !important}
-  .cat-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
 }
 </style>

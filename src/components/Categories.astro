@@ -1,33 +1,49 @@
 ---
 import type { LandingT } from '../i18n/es';
+import { sections, sectionName, sectionIcon, sectionCount, ewpaCount, sectionTotal } from '../data/sections';
 interface Props { t: LandingT }
 const { t } = Astro.props;
+const lang = t.lang === 'es' ? 'es' : 'en';
+const base = lang === 'es' ? '/es/abilities/' : '/abilities/';
+const eyebrow = t.categories.eyebrow
+  .replace('{abilities}', String(ewpaCount))
+  .replace('{sections}', String(sectionTotal));
 ---
-<section class="cats" id="abilities">
+<section class="abl-cats" id="abilities">
   <div class="wrap">
     <div class="sec-head">
-      <p class="eyebrow">{t.categories.eyebrow}</p>
+      <p class="eyebrow">{eyebrow}</p>
       <h2>{t.categories.h2}</h2>
       <p>{t.categories.desc}</p>
     </div>
-    <div class="cat-grid">
-      {t.categories.items.map(c => (
-        <div class="cat">
-          <div class="cat-icon">{c.icon}</div>
-          <div class="cat-name">{c.name}</div>
-          <div class="cat-count">{c.count}</div>
-        </div>
+    <div class="abl-grid">
+      {sections.map(s => (
+        <a class="abl-card" href={`${base}#${s.id}`}>
+          <span class="abl-card-icon" aria-hidden="true">{sectionIcon(s)}</span>
+          <span class="abl-card-name">{sectionName(s, lang)}</span>
+          <span class="abl-card-count">{(sectionCount(s) === 1 ? t.categories.countLabelOne : t.categories.countLabel).replace('{n}', String(sectionCount(s)))}</span>
+          {s.requires && <span class="abl-card-req">{t.categories.requires.replace('{x}', s.requires)}</span>}
+        </a>
       ))}
     </div>
+    <p class="abl-browse">
+      <a class="btn btn-ghost" href={base}>{t.categories.browse}</a>
+    </p>
   </div>
 </section>
 
 <style>
-.cats{padding:5rem 0}
-.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:.85rem}
-.cat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.15rem;transition:border-color .2s,box-shadow .2s;cursor:default}
-.cat:hover{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
-.cat-icon{font-size:1.35rem;margin-bottom:.4rem}
-.cat-name{font-size:.845rem;font-weight:600}
-.cat-count{font-size:.72rem;color:var(--fog);font-family:var(--mono);margin-top:.15rem}
+.abl-cats{padding:5rem 0}
+.abl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.85rem}
+.abl-card{display:flex;flex-direction:column;align-items:flex-start;width:100%;min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.15rem;text-align:left;transition:border-color .2s,box-shadow .2s}
+.abl-card:hover{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.abl-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-color:var(--accent)}
+.abl-card-icon{font-size:1.35rem;line-height:1.2;margin-bottom:.4rem}
+.abl-card-name{font-size:.845rem;font-weight:600;line-height:1.35}
+.abl-card-count{font-size:.72rem;color:var(--ink-2);font-family:var(--mono);margin-top:.15rem;font-variant-numeric:tabular-nums}
+.abl-card-req{font-size:.7rem;color:var(--ink-2);margin-top:auto;padding-top:.55rem;line-height:1.35}
+.abl-browse{margin-top:2rem}
+@media(max-width:600px){
+  .abl-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+}
 </style>

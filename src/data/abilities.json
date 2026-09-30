@@ -1,0 +1,261 @@
+[
+  {
+    "id": "core",
+    "name": "WordPress Core",
+    "requires": null,
+    "abilities": [
+      { "key": "core/get-site-info", "label": "Site Information", "type": "read", "description": "Get general site data: name, URL, description, language, timezone, and WordPress version." },
+      { "key": "core/get-user-info", "label": "User Information", "type": "read", "description": "Get the current user's name, email, role, and avatar." },
+      { "key": "core/get-environment-info", "label": "Environment Information", "type": "read", "description": "Get technical details: PHP version, database server, and environment type." }
+    ]
+  },
+  {
+    "id": "read",
+    "name": "Read (Query Only)",
+    "requires": null,
+    "abilities": [
+      { "key": "ewpa/get-posts", "label": "Get Posts", "type": "read", "description": "List posts filtered by status, category, count, and order." },
+      { "key": "ewpa/get-post", "label": "Get Single Post", "type": "read", "description": "Get full post detail by ID, including content, meta data, and featured image." },
+      { "key": "ewpa/get-categories", "label": "Get Categories", "type": "read", "description": "List all categories with ID, name, slug, and post count." },
+      { "key": "ewpa/get-tags", "label": "Get Tags", "type": "read", "description": "List all tags with ID, name, slug, and post count." },
+      { "key": "ewpa/get-pages", "label": "Get Pages", "type": "read", "description": "List site pages with title, status, and hierarchy." },
+      { "key": "ewpa/get-page", "label": "Get Single Page", "type": "read", "description": "Get full page detail by ID, including content, template, hierarchy, and SEO metadata." },
+      { "key": "ewpa/get-comments", "label": "Get Comments", "type": "read", "description": "List comments filtered by status, post, and count." },
+      { "key": "ewpa/get-media", "label": "Get Media", "type": "read", "description": "List media library files, optionally filtered by type." },
+      { "key": "ewpa/get-users", "label": "Get Users", "type": "read", "description": "List site users with ID, name, email, and role." }
+    ]
+  },
+  {
+    "id": "write",
+    "name": "Write (Create & Modify)",
+    "requires": null,
+    "abilities": [
+      { "key": "ewpa/create-post", "label": "Create Post", "type": "write", "description": "Create a post with title, content, categories, tags, and featured image." },
+      { "key": "ewpa/update-post", "label": "Update Post", "type": "write", "description": "Modify an existing post, updating only the fields you provide." },
+      { "key": "ewpa/delete-post", "label": "Delete Post", "type": "destructive", "description": "Send a post to the trash or permanently delete it." },
+      { "key": "ewpa/create-category", "label": "Create Category", "type": "write", "description": "Create a category with name, slug, description, and parent." },
+      { "key": "ewpa/create-tag", "label": "Create Tag", "type": "write", "description": "Create a tag with name, slug, and description." },
+      { "key": "ewpa/create-page", "label": "Create Page", "type": "write", "description": "Create a page with title, content, status, and parent page." },
+      { "key": "ewpa/moderate-comment", "label": "Moderate Comment", "type": "write", "description": "Change a comment's status to approved, held, spam, or trash." },
+      { "key": "ewpa/reply-comment", "label": "Reply to Comment", "type": "write", "description": "Reply to an existing comment as the authenticated user." },
+      { "key": "ewpa/update-comment", "label": "Update Comment", "type": "write", "description": "Update the content, author name, email, or linked user of a comment." },
+      { "key": "ewpa/upload-image", "label": "Upload Image from URL", "type": "write", "description": "Download an image from a URL into the media library and return its attachment ID." },
+      { "key": "ewpa/duplicate-post", "label": "Duplicate Post / Page / CPT", "type": "write", "description": "Copy any post, page, or CPT item with its meta and terms. Saved as a draft by default." },
+      { "key": "ewpa/assign-post-terms", "label": "Assign Post Terms", "type": "write", "description": "Assign custom taxonomy terms to a post or page." }
+    ]
+  },
+  {
+    "id": "rankmath",
+    "name": "SEO — Rank Math",
+    "requires": "Rank Math",
+    "abilities": [
+      { "key": "ewpa/get-rankmath", "label": "Get Rank Math Metadata", "type": "read", "description": "Read a post's Rank Math title, description, keywords, robots, and Open Graph data." },
+      { "key": "ewpa/update-rankmath", "label": "Update Rank Math SEO / Focus Keyword", "type": "write", "description": "Update focus keyword, SEO title, description, canonical, robots, and Open Graph via Rank Math." },
+      { "key": "ewpa/update-rankmath-schema", "label": "Update Rank Math Schema", "type": "write", "description": "Write a structured-data schema (FAQPage, Article, Product) that renders as JSON-LD." }
+    ]
+  },
+  {
+    "id": "seopress",
+    "name": "SEO — SEOPress",
+    "requires": "SEOPress",
+    "abilities": [
+      { "key": "ewpa/get-seopress", "label": "Get SEOPress Metadata", "type": "read", "description": "Read a post's SEOPress title, description, focus keyword, robots, canonical, and social data." },
+      { "key": "ewpa/update-seopress", "label": "Update SEOPress Metadata", "type": "write", "description": "Update SEOPress title, description, focus keyword, canonical, robots, and social fields." },
+      { "key": "ewpa/get-seopress-content-analysis", "label": "Get SEOPress Content Analysis", "type": "read", "description": "Read SEOPress content analysis checks and recommendations, optionally after a fresh run." }
+    ]
+  },
+  {
+    "id": "yoast",
+    "name": "SEO — Yoast SEO",
+    "requires": "Yoast SEO",
+    "abilities": [
+      { "key": "ewpa/yoast-get-seo", "label": "Get Yoast SEO Metadata", "type": "read", "description": "Read a post's Yoast title, description, focus keyphrase, canonical, robots, and social data." },
+      { "key": "ewpa/yoast-update-seo", "label": "Update Yoast SEO Metadata", "type": "write", "description": "Update Yoast title, description, focus keyphrase, canonical, robots, and social fields." },
+      { "key": "ewpa/yoast-get-sitemap-index", "label": "Get Yoast Sitemap Index", "type": "read", "description": "Fetch and parse the Yoast sitemap index into a list of all registered sitemap URLs." }
+    ]
+  },
+  {
+    "id": "menus",
+    "name": "Navigation Menus",
+    "requires": null,
+    "abilities": [
+      { "key": "ewpa/create-menu", "label": "Create Menu", "type": "write", "description": "Create a new, empty navigation menu with the given name." },
+      { "key": "ewpa/list-menus", "label": "List Menus", "type": "read", "description": "List every menu with ID, slug, item count, and the menu shown in each theme location." },
+      { "key": "ewpa/get-menu", "label": "Get Menu", "type": "read", "description": "Get every item of a menu with its hierarchy, destination, and position." },
+      { "key": "ewpa/add-menu-item", "label": "Add Menu Item", "type": "write", "description": "Add a page, post, category, tag, or custom URL to a menu, with optional parent and position." },
+      { "key": "ewpa/update-menu-item", "label": "Update Menu Item", "type": "write", "description": "Update the title, custom URL, parent, or position of a menu item." },
+      { "key": "ewpa/remove-menu-item", "label": "Remove Menu Item", "type": "destructive", "description": "Permanently remove one item from a menu. Off by default." },
+      { "key": "ewpa/assign-menu-location", "label": "Assign Menu Location", "type": "destructive", "description": "Assign a menu to a theme location, changing site-wide navigation. Off by default." },
+      { "key": "ewpa/delete-menu", "label": "Delete Menu", "type": "destructive", "description": "Permanently delete a menu and all of its items. Off by default." }
+    ]
+  },
+  {
+    "id": "utility",
+    "name": "Utility",
+    "requires": null,
+    "abilities": [
+      { "key": "ewpa/search-replace", "label": "Search and Replace", "type": "write", "description": "Find text in a post's content and replace it with other text." },
+      { "key": "ewpa/site-stats", "label": "Site Statistics", "type": "read", "description": "Get a site summary: total posts, pages, categories, tags, comments, and users." },
+      { "key": "ewpa/update-post-meta", "label": "Update Post Meta", "type": "write", "description": "Write any post meta field by exact key, subject to edit permission on the post." },
+      { "key": "ewpa/get-post-meta", "label": "Get Post Meta", "type": "read", "description": "Read a single post meta field by exact key, including whether the key exists." },
+      { "key": "ewpa/get-active-plugins", "label": "Get Active Plugins", "type": "read", "description": "List active plugins with name, version, and detected capabilities such as SEO or WooCommerce." },
+      { "key": "ewpa/clear-cache", "label": "Clear Cache", "type": "write", "description": "Purge the page cache for one post or the whole site across popular cache plugins." }
+    ]
+  },
+  {
+    "id": "code-snippets",
+    "name": "Code Snippets",
+    "requires": "Code Snippets",
+    "abilities": [
+      { "key": "ewpa/create-code-snippet", "label": "Create Code Snippet", "type": "write", "description": "Create an inactive PHP snippet after syntax validation and a dangerous-function check." },
+      { "key": "ewpa/get-code-snippets", "label": "List Code Snippets", "type": "read", "description": "List snippets with name, type, scope, active state, and tags, without the code." },
+      { "key": "ewpa/get-code-snippet", "label": "Get Code Snippet", "type": "read", "description": "Read one snippet by ID, including its code." },
+      { "key": "ewpa/update-code-snippet", "label": "Update Code Snippet", "type": "write", "description": "Change a snippet's name, description, code, scope, or tags. Off by default." },
+      { "key": "ewpa/set-code-snippet-active", "label": "Set Code Snippet Active", "type": "write", "description": "Deactivate a snippet or request activation, which an admin must confirm. Off by default." }
+    ]
+  },
+  {
+    "id": "multilanguage",
+    "name": "Multilanguage",
+    "requires": "Polylang / WPML / Linguator AI",
+    "abilities": [
+      { "key": "ewpa/list-languages", "label": "List Languages", "type": "read", "description": "List the languages available from Polylang, WPML, or Linguator AI." },
+      { "key": "ewpa/create-post-translation", "label": "Create Post Translation", "type": "write", "description": "Create a post's translation in a target language and link it to the source." },
+      { "key": "ewpa/set-post-language", "label": "Set Post Language", "type": "write", "description": "Assign a language code to an existing post." },
+      { "key": "ewpa/link-post-translation", "label": "Link Post Translation", "type": "write", "description": "Link two posts as translations of each other in one translation group." },
+      { "key": "ewpa/get-post-translations", "label": "Get Post Translations", "type": "read", "description": "Get a post's translation map: language, ID, title, permalink, and status." },
+      { "key": "ewpa/create-term-translation", "label": "Create Term Translation", "type": "write", "description": "Create the translation of a category, tag, or custom term and link it to the source." },
+      { "key": "ewpa/set-term-language", "label": "Set Term Language", "type": "write", "description": "Assign a language code to an existing taxonomy term." },
+      { "key": "ewpa/link-term-translation", "label": "Link Term Translation", "type": "write", "description": "Link two taxonomy terms as translations of each other." },
+      { "key": "ewpa/get-term-translations", "label": "Get Term Translations", "type": "read", "description": "Get a term's translation map: language, ID, name, slug, count, and archive URL." }
+    ]
+  },
+  {
+    "id": "woocommerce",
+    "name": "WooCommerce",
+    "requires": "WooCommerce",
+    "abilities": [
+      { "key": "ewpa/wc-get-products", "label": "Get Products", "type": "read", "description": "List products with price, SKU, stock status, categories, and type, with search and category filters." },
+      { "key": "ewpa/wc-get-product", "label": "Get Single Product", "type": "read", "description": "Get full product detail: price, stock, description, gallery, attributes, and variations." },
+      { "key": "ewpa/wc-update-product", "label": "Update Product", "type": "write", "description": "Update a product's price, sale price, stock quantity, status, or description." },
+      { "key": "ewpa/wc-get-orders", "label": "Get Orders", "type": "read", "description": "List orders with customer, total, status, and date, filterable by status. HPOS-compatible." },
+      { "key": "ewpa/wc-get-order", "label": "Get Single Order", "type": "read", "description": "Get full order detail: line items, billing and shipping, totals, status history, and notes." },
+      { "key": "ewpa/wc-update-order-status", "label": "Update Order Status", "type": "write", "description": "Change an order's status, for example processing to completed, with an optional note." },
+      { "key": "ewpa/wc-get-customers", "label": "Get Customers", "type": "read", "description": "List customers with email, name, total spent, and order count. Searchable by email or name." }
+    ]
+  },
+  {
+    "id": "tec",
+    "name": "The Events Calendar",
+    "requires": "The Events Calendar",
+    "abilities": [
+      { "key": "ewpa/tec-get-events", "label": "Get Events", "type": "read", "description": "List events with dates, venue, and organizer, filterable by upcoming, past, or date range." },
+      { "key": "ewpa/tec-get-event", "label": "Get Single Event", "type": "read", "description": "Get full event detail with resolved venue address and organizer contact info." },
+      { "key": "ewpa/tec-create-event", "label": "Create Event", "type": "write", "description": "Create an event with title, description, dates, timezone, and venue by ID or name." },
+      { "key": "ewpa/tec-update-event", "label": "Update Event", "type": "write", "description": "Update an event's title, description, dates, timezone, or venue." }
+    ]
+  },
+  {
+    "id": "cpt",
+    "name": "Custom Post Types",
+    "requires": null,
+    "abilities": [
+      { "key": "ewpa/list-post-types", "label": "List Post Types", "type": "read", "description": "List public custom post types with labels, taxonomies, supported features, and capabilities." },
+      { "key": "ewpa/get-cpt-items", "label": "Get CPT Items", "type": "read", "description": "List items from any custom post type, filtered by status, count, order, and search." },
+      { "key": "ewpa/get-cpt-item", "label": "Get Single CPT Item", "type": "read", "description": "Get a CPT item by ID with content, meta data, taxonomies, and featured image." },
+      { "key": "ewpa/create-cpt-item", "label": "Create CPT Item", "type": "write", "description": "Create an item in any custom post type with title, content, status, taxonomies, and image." },
+      { "key": "ewpa/update-cpt-item", "label": "Update CPT Item", "type": "write", "description": "Update a CPT item, changing only the fields you provide." },
+      { "key": "ewpa/delete-cpt-item", "label": "Delete CPT Item", "type": "destructive", "description": "Send a CPT item to the trash or permanently delete it." },
+      { "key": "ewpa/get-cpt-taxonomies", "label": "Get CPT Taxonomies", "type": "read", "description": "List a custom post type's taxonomies and their terms." },
+      { "key": "ewpa/assign-cpt-terms", "label": "Assign Terms to CPT Item", "type": "write", "description": "Assign taxonomy terms to a CPT item, adding to or replacing existing terms." },
+      { "key": "ewpa/get-term-meta", "label": "Get Term Meta", "type": "read", "description": "Read one term meta field by exact key, or all meta for a term." },
+      { "key": "ewpa/update-term-meta", "label": "Update Term Meta", "type": "write", "description": "Write any term meta field by exact key." },
+      { "key": "ewpa/update-term", "label": "Update Term", "type": "write", "description": "Update a taxonomy term's name, slug, description, or parent." }
+    ]
+  },
+  {
+    "id": "jetengine-options-pages",
+    "name": "JetEngine — Options Pages",
+    "requires": "JetEngine",
+    "abilities": [
+      { "key": "ewpa/je-list-options-pages", "label": "List Options Pages", "type": "read", "description": "List registered JetEngine Options Pages with their field schema, without values." },
+      { "key": "ewpa/je-get-options-page", "label": "Get Options Page", "type": "read", "description": "Get all fields and current stored values for an Options Page slug." },
+      { "key": "ewpa/je-update-options-page-field", "label": "Update Options Page Field", "type": "destructive", "description": "Write a new value to one field of an Options Page. Off by default." }
+    ]
+  },
+  {
+    "id": "jetengine-query-builder",
+    "name": "JetEngine Query Builder",
+    "requires": "JetEngine",
+    "abilities": [
+      { "key": "ewpa/je-list-queries", "label": "List Queries", "type": "read", "description": "List all Query Builder queries with ID, name, and query type." },
+      { "key": "ewpa/je-get-query", "label": "Get Query", "type": "read", "description": "Get the full settings of one Query Builder query by ID." },
+      { "key": "ewpa/je-update-query", "label": "Update Query", "type": "destructive", "description": "Update an existing query's name, type, or arguments. Off by default." }
+    ]
+  },
+  {
+    "id": "elementor",
+    "name": "Elementor",
+    "requires": "Elementor",
+    "abilities": [
+      { "key": "ewpa/elementor-bind-dynamic-field", "label": "Bind Dynamic Field", "type": "destructive", "description": "Bind an Elementor widget setting to a dynamic tag such as post title or a meta field. Off by default." },
+      { "key": "ewpa/elementor-get-structure", "label": "Get Structure", "type": "read", "description": "Read a compact tree of an Elementor page: element IDs, types, and text previews." },
+      { "key": "ewpa/elementor-update-element", "label": "Update Element", "type": "destructive", "description": "Edit the static content and style settings of an Elementor element by ID. Off by default." }
+    ]
+  },
+  {
+    "id": "learndash",
+    "name": "LearnDash",
+    "requires": "LearnDash",
+    "abilities": [
+      { "key": "ewpa/ld-get-courses", "label": "Get Courses", "type": "read", "description": "List published courses with title, slug, permalink, and enrolled user count." },
+      { "key": "ewpa/ld-get-course", "label": "Get Single Course", "type": "read", "description": "Get full course detail: description, ordered lessons with topics, and course-level quizzes." },
+      { "key": "ewpa/ld-get-user-progress", "label": "Get User Progress", "type": "read", "description": "Get a user's progress in a course: enrollment, steps completed, percentage, and completion." },
+      { "key": "ewpa/ld-get-quiz-results", "label": "Get Quiz Results", "type": "read", "description": "Get a user's quiz attempts with score, pass/fail, and timestamp, newest first." },
+      { "key": "ewpa/ld-enroll-user", "label": "Enroll User", "type": "write", "description": "Enroll a user in a LearnDash course. Requires admin rights. Off by default." },
+      { "key": "ewpa/ld-unenroll-user", "label": "Unenroll User", "type": "destructive", "description": "Remove a user's access to a LearnDash course. Requires admin rights. Off by default." }
+    ]
+  },
+  {
+    "id": "tutor",
+    "name": "Tutor LMS",
+    "requires": "Tutor LMS",
+    "abilities": [
+      { "key": "ewpa/tutor-get-lesson-video", "label": "Get Lesson Video", "type": "read", "description": "Read a lesson's video source configuration: source type, value, and runtime." },
+      { "key": "ewpa/tutor-update-lesson-video", "label": "Update Lesson Video", "type": "write", "description": "Set a lesson's video source using Tutor's own storage function." },
+      { "key": "ewpa/tutor-get-courses", "label": "List Courses", "type": "read", "description": "List published courses with title, slug, permalink, and enrolled user count." },
+      { "key": "ewpa/tutor-get-course", "label": "Get Single Course", "type": "read", "description": "Get full course detail with topics and their ordered lessons, quizzes, and assignments." },
+      { "key": "ewpa/tutor-get-user-progress", "label": "Get User Progress", "type": "read", "description": "Get a user's progress in a course: enrollment date, steps completed, and percentage." },
+      { "key": "ewpa/tutor-get-quiz-results", "label": "Get Quiz Results", "type": "read", "description": "Get a user's quiz attempts with score, pass/fail, and timestamps, newest first." },
+      { "key": "ewpa/tutor-enroll-user", "label": "Enroll User", "type": "write", "description": "Enroll a user in a Tutor LMS course. Requires admin rights. Off by default." },
+      { "key": "ewpa/tutor-unenroll-user", "label": "Unenroll User", "type": "destructive", "description": "Cancel a user's enrollment in a Tutor LMS course. Requires admin rights. Off by default." }
+    ]
+  },
+  {
+    "id": "agent-readiness",
+    "name": "AI — Agent Readiness (llms.txt)",
+    "requires": null,
+    "abilities": [
+      { "key": "ewpa/get-llms-txt", "label": "Get llms.txt", "type": "read", "description": "Fetch the site's llms.txt, detect what serves it, and validate it against the llmstxt.org spec." },
+      { "key": "ewpa/update-llms-txt", "label": "Update llms.txt", "type": "destructive", "description": "Write the llms.txt content, via SEOPress Pro when active or a virtual file. Off by default." }
+    ]
+  },
+  {
+    "id": "accessibility",
+    "name": "Accessibility (WCAG)",
+    "requires": null,
+    "abilities": [
+      { "key": "ewpa/get-accessibility-snapshot", "label": "Get Accessibility Snapshot", "type": "read", "description": "Scan the media library for images missing alt text (WCAG 1.1.1), with pagination." }
+    ]
+  },
+  {
+    "id": "fse-templates",
+    "name": "FSE Block Templates",
+    "requires": null,
+    "abilities": [
+      { "key": "ewpa/fse-list-templates", "label": "List Templates", "type": "read", "description": "List the active theme's block templates and template parts, marking user-edited overrides." },
+      { "key": "ewpa/fse-get-template", "label": "Get Template", "type": "read", "description": "Get the full block markup of one template or template part by slug." },
+      { "key": "ewpa/fse-update-template", "label": "Update Template", "type": "destructive", "description": "Write new block markup to a template or part. Header and footer edits affect every page. Off by default." }
+    ]
+  }
+]

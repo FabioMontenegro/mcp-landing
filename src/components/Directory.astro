@@ -1,0 +1,381 @@
+---
+import type { LandingT } from '../i18n/es';
+import {
+  sections, sectionName, sectionIcon, sectionCount,
+  ewpaCount, sectionTotal, totalCount, typeCounts,
+} from '../data/sections';
+import type { AbilityType } from '../data/sections';
+
+interface Props { t: LandingT }
+const { t } = Astro.props;
+const d = t.directory;
+const lang = t.lang === 'es' ? 'es' : 'en';
+const coreCount = sections.find((s) => s.id === 'core')?.abilities.length ?? 0;
+const summary = d.summary
+  .replace('{abilities}', String(ewpaCount))
+  .replace('{sections}', String(sectionTotal))
+  .replace('{core}', String(coreCount));
+const typeOrder: AbilityType[] = ['read', 'write', 'destructive'];
+const typeLabel = (k: AbilityType) => d.types[k];
+// Descriptions and labels come from the plugin and stay in English on the ES page.
+const srcLang = lang === 'es' ? 'en' : undefined;
+---
+<main
+  class="abl-dir"
+  data-results={d.results}
+  data-copied={d.copied}
+  data-total={totalCount}
+>
+  <header class="abl-head wrap">
+    <p class="eyebrow">{d.eyebrow}</p>
+    <h1>{d.h1}</h1>
+    <p class="abl-summary">{summary}</p>
+    {d.note && <p class="abl-note">{d.note}</p>}
+  </header>
+
+  <div class="abl-toolbar" hidden>
+    <div class="wrap abl-toolbar-in">
+      <label class="abl-search">
+        <span class="abl-sr">{d.searchLabel}</span>
+        <svg aria-hidden="true" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+        <input type="search" class="abl-input" placeholder={d.searchPlaceholder} autocomplete="off" spellcheck="false" />
+        <kbd class="abl-kbd" title={d.searchHint} aria-hidden="true">/</kbd>
+      </label>
+      <div class="abl-chips" role="group" aria-label={d.filterLabel}>
+        <button type="button" class="abl-chip" data-filter="all" aria-pressed="true">
+          {d.all} <span class="abl-chip-n" data-count="all">{totalCount}</span>
+        </button>
+        {typeOrder.map((k) => (
+          <button type="button" class={`abl-chip abl-chip-${k}`} data-filter={k} aria-pressed="false">
+            {typeLabel(k)} <span class="abl-chip-n" data-count={k}>{typeCounts[k]}</span>
+          </button>
+        ))}
+      </div>
+      <p class="abl-result" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <div class="wrap abl-layout">
+    <nav class="abl-index" aria-label={d.indexLabel}>
+      <p class="abl-index-title">{d.indexLabel}</p>
+      <ul>
+        {sections.map((s) => (
+          <li data-index-for={s.id}>
+            <a href={`#${s.id}`}>
+              <span class="abl-index-name">{sectionName(s, lang)}</span>
+              <span class="abl-index-n" data-index-count>{sectionCount(s)}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="abl-list">
+      {sections.map((s) => (
+        <section class="abl-sec" id={s.id} aria-labelledby={`${s.id}-h`}>
+          <header class="abl-sec-head">
+            <h2 id={`${s.id}-h`}>
+              <span aria-hidden="true">{sectionIcon(s)}</span> {sectionName(s, lang)}
+            </h2>
+            <div class="abl-sec-meta">
+              <span class="abl-sec-sub">{s.name}</span>
+              {s.requires && <span class="abl-tag">{d.requires}: {s.requires}</span>}
+              {s.id === 'core' && <span class="abl-tag abl-tag-core">{d.builtIn}</span>}
+            </div>
+          </header>
+          <ul class="abl-rows">
+            {s.abilities.map((a) => (
+              <li
+                class="abl-row"
+                data-type={a.type}
+                data-q={`${a.key} ${a.label} ${a.description} ${s.name} ${sectionName(s, lang)} ${s.requires ?? ''}`.toLowerCase()}
+              >
+                <div class="abl-row-top">
+                  <span class="abl-label" lang={srcLang}>{a.label}</span>
+                  <span class={`abl-pill abl-pill-${a.type}`}>{typeLabel(a.type)}</span>
+                </div>
+                <div class="abl-keyline">
+                  <code class="abl-key">{a.key}</code>
+                  <button type="button" class="abl-copy" data-key={a.key} aria-label={`${d.copy}: ${a.key}`} title={d.copy}>
+                    <svg aria-hidden="true" viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
+                    <span class="abl-copied" aria-live="polite"></span>
+                  </button>
+                </div>
+                <p class="abl-desc" lang={srcLang}>{a.description}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+      <div class="abl-empty" hidden>
+        <p>{d.empty}</p>
+        <button type="button" class="btn btn-ghost abl-reset">{d.reset}</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<style>
+.abl-dir{--abl-nav:70px;--abl-bar:0px;--abl-offset:150px;padding-bottom:4rem}
+.abl-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Header */
+.abl-head{padding-top:3rem;padding-bottom:1.75rem}
+.abl-head h1{font-size:clamp(1.75rem,4vw,2.6rem);font-weight:700;line-height:1.15;text-wrap:balance;margin:.5rem 0 .75rem}
+.abl-summary{max-width:70ch;color:var(--ink-2);font-size:1rem}
+.abl-note{margin-top:.4rem;color:var(--ink-2);font-size:.875rem;font-style:italic}
+
+/* Toolbar */
+.abl-toolbar{background:var(--paper);border-top:1px solid var(--border);border-bottom:1px solid var(--border);z-index:150}
+.abl-toolbar[hidden]{display:none}
+.abl-toolbar-in{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem 1rem;padding-top:.7rem;padding-bottom:.7rem}
+.abl-search{position:relative;flex:1 1 260px;min-width:0;display:flex;align-items:center;color:var(--ink-2)}
+.abl-search svg{position:absolute;left:.7rem;pointer-events:none}
+.abl-input{width:100%;font:inherit;font-size:.875rem;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.55rem 2.2rem .55rem 2.15rem;-webkit-appearance:none;appearance:none}
+.abl-input::placeholder{color:var(--ink-2);opacity:.8}
+.abl-input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.abl-kbd{position:absolute;right:.6rem;font-family:var(--mono);font-size:.68rem;color:var(--ink-2);border:1px solid var(--border);border-radius:4px;padding:0 .35rem;line-height:1.4;background:var(--paper)}
+.abl-chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.abl-chip{font:inherit;font-size:.78rem;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:.35rem .75rem;cursor:pointer;transition:border-color .15s,background .15s,color .15s;display:inline-flex;gap:.4rem;align-items:center}
+.abl-chip:hover{border-color:var(--fog);color:var(--ink)}
+.abl-chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.abl-chip[aria-pressed="true"]{background:var(--accent-dim);border-color:var(--accent);color:var(--ink)}
+.abl-chip-n{font-family:var(--mono);font-size:.7rem;font-variant-numeric:tabular-nums;opacity:.85}
+.abl-result{font-family:var(--mono);font-size:.75rem;color:var(--ink-2);font-variant-numeric:tabular-nums;margin-left:auto;white-space:nowrap}
+
+/* Layout */
+.abl-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:2rem;padding-top:1.75rem;align-items:start}
+.abl-index{position:sticky;top:calc(var(--abl-nav) + var(--abl-bar) + 1rem);max-height:calc(100vh - var(--abl-nav) - var(--abl-bar) - 2rem);overflow-y:auto;overscroll-behavior:contain;padding-right:.25rem}
+.abl-index-title{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-2);margin-bottom:.5rem}
+.abl-index a{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;padding:.3rem .6rem;border-radius:6px;border-left:2px solid transparent;font-size:.82rem;color:var(--ink-2);transition:background .15s,color .15s}
+.abl-index a:hover{background:var(--accent-dim);color:var(--ink)}
+.abl-index a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.abl-index a[aria-current="true"]{color:var(--ink);font-weight:600;border-left-color:var(--accent);background:var(--accent-dim)}
+.abl-index-n{font-family:var(--mono);font-size:.7rem;font-variant-numeric:tabular-nums;opacity:.85}
+
+/* Sections */
+.abl-sec{scroll-margin-top:var(--abl-offset);margin-bottom:2.25rem}
+.abl-sec[hidden]{display:none}
+.abl-sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.35rem 1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);margin-bottom:.25rem}
+.abl-sec-head h2{font-size:1.2rem;font-weight:700;line-height:1.3}
+.abl-sec-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .6rem}
+.abl-sec-sub{font-family:var(--mono);font-size:.72rem;color:var(--ink-2)}
+.abl-tag{font-size:.72rem;font-weight:600;color:var(--ink-2);border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:.1rem .6rem}
+.abl-tag-core{color:var(--ink);border-color:var(--accent);background:var(--accent-dim)}
+
+/* Rows */
+.abl-rows{display:block}
+.abl-row{padding:.8rem .25rem;border-bottom:1px solid var(--border)}
+.abl-row[hidden]{display:none}
+.abl-row-top{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem}
+.abl-label{font-size:.92rem;font-weight:600;overflow-wrap:anywhere}
+.abl-pill{flex-shrink:0;font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid;border-radius:999px;padding:.08rem .55rem}
+.abl-pill-read{color:var(--t-read-fg);background:var(--t-read-bg);border-color:var(--t-read-bd)}
+.abl-pill-write{color:var(--t-write-fg);background:var(--t-write-bg);border-color:var(--t-write-bd)}
+.abl-pill-destructive{color:var(--t-destr-fg);background:var(--t-destr-bg);border-color:var(--t-destr-bd)}
+.abl-keyline{display:flex;align-items:center;gap:.4rem;margin-top:.15rem;min-width:0}
+.abl-key{font-family:var(--mono);font-size:.76rem;color:var(--ink-2);overflow-wrap:anywhere;min-width:0}
+.abl-copy{position:relative;display:inline-flex;align-items:center;gap:.3rem;flex-shrink:0;font:inherit;font-size:.68rem;color:var(--ink-2);background:transparent;border:1px solid transparent;border-radius:5px;padding:.15rem .3rem;cursor:pointer;transition:border-color .15s,color .15s,background .15s}
+.abl-copy:hover{color:var(--ink);border-color:var(--border);background:var(--surface)}
+.abl-copy:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.abl-copied{font-family:var(--mono);font-weight:600;color:var(--t-read-fg)}
+.abl-desc{margin-top:.3rem;font-size:.86rem;line-height:1.55;color:var(--ink-2);max-width:78ch;overflow-wrap:anywhere}
+
+/* Empty state */
+.abl-empty{padding:3rem 0;text-align:center;color:var(--ink-2)}
+.abl-empty[hidden]{display:none}
+.abl-empty p{margin-bottom:1rem}
+
+/* Sticky toolbar only where there is room */
+@media(min-width:861px){
+  .abl-toolbar{position:sticky;top:var(--abl-nav)}
+}
+
+@media(max-width:860px){
+  .abl-layout{grid-template-columns:minmax(0,1fr);gap:1rem;padding-top:1rem}
+  .abl-index{position:sticky;top:var(--abl-nav);z-index:140;max-height:none;overflow:visible;margin:0 -1.5rem;padding:.5rem 1.5rem;background:var(--paper);border-bottom:1px solid var(--border)}
+  .abl-index-title{display:none}
+  .abl-index ul{display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.25rem}
+  .abl-index ul::-webkit-scrollbar{display:none}
+  .abl-index li{flex-shrink:0}
+  .abl-index a{border:1px solid var(--border);border-left-width:1px;border-radius:999px;background:var(--surface);white-space:nowrap;padding:.3rem .7rem;gap:.4rem}
+  .abl-index a[aria-current="true"]{border-color:var(--accent)}
+  .abl-result{margin-left:0;width:100%}
+}
+@media(max-width:600px){
+  .abl-head{padding-top:2rem}
+  .abl-kbd{display:none}
+  .abl-row-top{flex-wrap:wrap}
+}
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.abl-dir');
+  if (root) {
+    const toolbar = root.querySelector<HTMLElement>('.abl-toolbar')!;
+    const input = root.querySelector<HTMLInputElement>('.abl-input')!;
+    const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('.abl-chip'));
+    const resultEl = root.querySelector<HTMLElement>('.abl-result')!;
+    const emptyEl = root.querySelector<HTMLElement>('.abl-empty')!;
+    const sectionsEl = Array.from(root.querySelectorAll<HTMLElement>('.abl-sec'));
+    const indexEl = root.querySelector<HTMLElement>('.abl-index')!;
+    const rows = Array.from(root.querySelectorAll<HTMLElement>('.abl-row'));
+    const total = Number(root.dataset.total) || rows.length;
+    const resultTpl = root.dataset.results || '{n} / {total}';
+    const copiedText = root.dataset.copied || 'Copied';
+    const types = ['read', 'write', 'destructive'];
+    let type = 'all';
+
+    toolbar.hidden = false;
+
+    // ── Sticky offsets (nav + toolbar/index heights) ─────────────
+    const mq = window.matchMedia('(min-width:861px)');
+    const setOffsets = () => {
+      const nav = document.querySelector('nav');
+      const navH = nav ? nav.getBoundingClientRect().height : 70;
+      const barH = mq.matches ? toolbar.getBoundingClientRect().height : 0;
+      const idxH = mq.matches ? 0 : indexEl.getBoundingClientRect().height;
+      root.style.setProperty('--abl-nav', navH + 'px');
+      root.style.setProperty('--abl-bar', barH + 'px');
+      root.style.setProperty('--abl-offset', Math.round(navH + barH + idxH + 16) + 'px');
+    };
+    setOffsets();
+    window.addEventListener('resize', setOffsets);
+    if ('ResizeObserver' in window) new ResizeObserver(setOffsets).observe(toolbar);
+
+    // ── Filtering ────────────────────────────────────────────────
+    const setText = (sel: string, value: string) => {
+      const el = root.querySelector(sel);
+      if (el) el.textContent = value;
+    };
+
+    const apply = () => {
+      const q = input.value.trim().toLowerCase();
+      const words = q ? q.split(/\s+/) : [];
+      const counts: Record<string, number> = { all: 0, read: 0, write: 0, destructive: 0 };
+      let shown = 0;
+
+      rows.forEach((row) => {
+        const hay = row.dataset.q || '';
+        const t = row.dataset.type || '';
+        const matchesQuery = words.every((w) => hay.includes(w));
+        if (matchesQuery) { counts.all++; if (t in counts) counts[t]++; }
+        const visible = matchesQuery && (type === 'all' || t === type);
+        row.hidden = !visible;
+        if (visible) shown++;
+      });
+
+      sectionsEl.forEach((sec) => {
+        const n = sec.querySelectorAll('.abl-row:not([hidden])').length;
+        sec.hidden = n === 0;
+        const li = indexEl.querySelector<HTMLElement>(`[data-index-for="${sec.id}"]`);
+        if (li) {
+          li.hidden = n === 0;
+          const c = li.querySelector('[data-index-count]');
+          if (c) c.textContent = String(n);
+        }
+      });
+
+      ['all', ...types].forEach((k) => setText(`[data-count="${k}"]`, String(counts[k])));
+      resultEl.textContent = resultTpl.replace('{n}', String(shown)).replace('{total}', String(total));
+      emptyEl.hidden = shown !== 0;
+      requestAnimationFrame(observe);
+    };
+
+    input.addEventListener('input', apply);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && input.value) { input.value = ''; apply(); }
+    });
+    chips.forEach((chip) => chip.addEventListener('click', () => {
+      type = chip.dataset.filter || 'all';
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      apply();
+    }));
+    root.querySelector('.abl-reset')?.addEventListener('click', () => {
+      input.value = '';
+      type = 'all';
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.filter === 'all')));
+      apply();
+      input.focus();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
+      const el = e.target as HTMLElement | null;
+      if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable)) return;
+      e.preventDefault();
+      input.focus();
+      input.select();
+    });
+
+    // ── Copy key ─────────────────────────────────────────────────
+    const copyText = async (text: string) => {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        let ok = false;
+        try { ok = document.execCommand('copy'); } catch { ok = false; }
+        ta.remove();
+        return ok;
+      }
+    };
+    root.addEventListener('click', async (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.abl-copy');
+      if (!btn) return;
+      const ok = await copyText(btn.dataset.key || '');
+      if (!ok) return;
+      const label = btn.querySelector('.abl-copied');
+      if (!label) return;
+      label.textContent = copiedText;
+      window.setTimeout(() => { label.textContent = ''; }, 1400);
+    });
+
+    // ── Active section highlight ─────────────────────────────────
+    const links = new Map<string, HTMLAnchorElement>();
+    indexEl.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => links.set(a.hash.slice(1), a));
+    let ticking = false;
+
+    const paint = () => {
+      ticking = false;
+      const offset = parseInt(getComputedStyle(root!).getPropertyValue('--abl-offset'), 10) || 150;
+      const shown = sectionsEl.filter((s) => !s.hidden);
+      let first = shown[0];
+      for (const s of shown) {
+        if (s.getBoundingClientRect().top <= offset + 4) first = s;
+        else break;
+      }
+      links.forEach((a, id) => {
+        if (first && id === first.id) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+      const active = first ? links.get(first.id) : null;
+      if (active && !mq.matches) {
+        const ul = active.closest('ul');
+        if (ul) ul.scrollTo({ left: active.offsetLeft - 24, behavior: 'auto' });
+      }
+    };
+
+    function observe() {
+      paint();
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+    }, { passive: true });
+
+    apply();
+
+    // Deep links (/abilities/#woocommerce): re-align once offsets are known.
+    if (location.hash.length > 1) {
+      const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (target) requestAnimationFrame(() => target.scrollIntoView());
+    }
+  }
+</script>
