@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>OG card</title>
+<style>
+  :root{--accent:#06D6A0;--accent-dim:rgba(6,214,160,.14);--ink:#E6ECF5;--ink-2:#9FB0C6;--fog:#6B7B90;--paper:#0B1120;--surface:#111D2E;--border:rgba(255,255,255,.09);--mono:'Cascadia Code','SF Mono',Consolas,monospace;--sans:'Segoe UI',system-ui,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:630px;overflow:hidden;background:var(--paper)}
+  body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+  .card{position:relative;width:1200px;height:630px;padding:64px 68px;display:grid;grid-template-columns:1fr 440px;gap:56px;align-items:center;
+    background:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0) 0 0/28px 28px,var(--paper)}
+  .card::after{content:'';position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--accent)}
+  .brand{font-family:var(--mono);font-size:22px;font-weight:700;display:flex;gap:10px;align-items:center}
+  .brand b{color:var(--accent)}
+  h1{font-size:74px;line-height:1.02;font-weight:800;letter-spacing:-.02em;margin:26px 0 22px}
+  .sub{font-size:26px;line-height:1.4;color:var(--ink-2);max-width:26ch}
+  .foot{margin-top:34px;font-family:var(--mono);font-size:19px;color:var(--fog);display:flex;gap:14px;align-items:center}
+  .foot span{color:var(--accent)}
+  .diagram{display:flex;flex-direction:column;align-items:center;gap:14px;padding:34px 28px;background:var(--surface);border:1px solid var(--border);border-radius:22px}
+  .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+  .chips li{list-style:none;font-size:19px;padding:8px 16px;border:1px solid var(--border);border-radius:999px;background:var(--paper);color:var(--ink-2)}
+  .chips li strong{color:var(--ink)}
+  .chips li.dashed{border-style:dashed}
+  .clients li{font-family:var(--mono);font-size:17px}
+  .arrow{width:2px;height:30px;background:linear-gradient(var(--border),var(--accent));position:relative}
+  .arrow::after{content:'';position:absolute;bottom:-5px;left:-5px;border:6px solid transparent;border-top-color:var(--accent)}
+  .hub{display:flex;flex-direction:column;align-items:center;gap:4px;padding:18px 28px;border:2px solid var(--accent);border-radius:18px;box-shadow:0 0 0 8px var(--accent-dim);background:var(--paper)}
+  .hub i{font-style:normal;color:var(--accent);font-size:24px}
+  .hub b{font-family:var(--mono);font-size:21px}
+  .hub small{font-size:15px;color:var(--fog)}
+</style>
+</head>
+<body>
+<div class="card">
+  <div>
+    <div class="brand"><b>⚡</b> Enable Abilities for MCP</div>
+    <h1 id="h1"></h1>
+    <p class="sub" id="sub"></p>
+    <div class="foot"><span id="free"></span> · mcp.fabiomontenegro.com</div>
+  </div>
+  <div class="diagram">
+    <ul class="chips">
+      <li><strong>109</strong> <span id="builtin"></span></li>
+      <li>Elementor</li><li>Bricks</li><li>Fluent Forms</li>
+      <li class="dashed" id="any"></li>
+    </ul>
+    <div class="arrow"></div>
+    <div class="hub"><i>⚡</i><b>Enable Abilities for MCP</b><small id="hub"></small></div>
+    <div class="arrow"></div>
+    <ul class="chips clients"><li>Claude</li><li>ChatGPT</li><li>Cursor</li><li id="more"></li></ul>
+  </div>
+</div>
+<script>
+  const T = {
+    en: { h1:'One plugin to rule them all.', sub:'Your AI controls WordPress and every plugin that speaks the Abilities API. One connection.', free:'Free & open source', builtin:'built-in abilities', any:'Any Abilities API plugin', hub:'One connection · one dashboard', more:'and more' },
+    es: { h1:'Un plugin para gobernarlos a todos.', sub:'Tu IA controla WordPress y cada plugin compatible con la Abilities API. Una sola conexión.', free:'Gratis y open source', builtin:'abilities incluidas', any:'Cualquier plugin con Abilities API', hub:'Una conexión · un panel', more:'y más' },
+  };
+  const t = T[new URLSearchParams(location.search).get('lang') || 'en'];
+  for (const [k, v] of Object.entries(t)) document.getElementById(k).textContent = v;
+</script>
+</body>
+</html>

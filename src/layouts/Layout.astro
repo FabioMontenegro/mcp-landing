@@ -13,6 +13,11 @@ const { t, title = t.meta.title, description = t.meta.description, path = '' } =
 const origin = 'https://mcp.fabiomontenegro.com';
 const enUrl = `${origin}/${path}`;
 const esUrl = `${origin}/es/${path}`;
+const pageUrl = t.lang === 'es' ? esUrl : enUrl;
+const ogImage = `${origin}/og-${t.lang === 'es' ? 'es' : 'en'}.png`;
+const ogAlt = t.lang === 'es'
+  ? 'Un plugin para gobernarlos a todos: Enable Abilities for MCP conecta las abilities de WordPress, Elementor, Bricks y Fluent Forms con Claude, ChatGPT y Cursor.'
+  : 'One plugin to rule them all: Enable Abilities for MCP connects abilities from WordPress, Elementor, Bricks and Fluent Forms to Claude, ChatGPT and Cursor.';
 ---
 
 <!doctype html>
@@ -22,7 +27,22 @@ const esUrl = `${origin}/es/${path}`;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={t.lang === 'es' ? esUrl : enUrl} />
+    <link rel="canonical" href={pageUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Enable Abilities for MCP" />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
+    <meta property="og:locale" content={t.lang === 'es' ? 'es_LA' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
     <link rel="alternate" hreflang="en" href={enUrl} />
     <link rel="alternate" hreflang="es" href={esUrl} />
     <link rel="alternate" hreflang="x-default" href={enUrl} />
