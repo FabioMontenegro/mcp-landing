@@ -3,7 +3,7 @@ export const es = {
   dir: 'ltr',
   meta: {
     title: 'Enable Abilities for MCP — Tu IA con acceso real a WordPress',
-    description: '101 abilities para que Claude, Copilot, Cursor o cualquier cliente MCP lea y escriba en tu WordPress directamente.',
+    description: '109 abilities para que Claude, Copilot, Cursor o cualquier cliente MCP lea y escriba en tu WordPress directamente.',
   },
   nav: {
     logo: 'Enable Abilities for MCP',
@@ -18,7 +18,7 @@ export const es = {
   hero: {
     eyebrow: 'WordPress × MCP',
     h1: 'Lo que le pides a la IA, ahora lo hace en WordPress.',
-    subhead: '101 abilities para que Claude, Copilot, Cursor o cualquier cliente MCP lea y escriba en tu sitio directamente — sin APIs externas, sin copypaste.',
+    subhead: '109 abilities para que Claude, Copilot, Cursor o cualquier cliente MCP lea y escriba en tu sitio directamente — sin APIs externas, sin copypaste.',
     cta1: 'Instalar gratis en WordPress.org',
     cta2: 'Ver todas las abilities →',
     terminal: {
@@ -44,7 +44,7 @@ export const es = {
   stats: [
     { num: '41K+',  label: 'Descargas totales' },
     { num: '4K+',   label: 'Sitios activos' },
-    { num: '101+',  label: 'Abilities' },
+    { num: '109+',  label: 'Abilities' },
     { num: '★ 5/5', label: '12 reseñas en wp.org', accent: true },
   ],
   compare: {

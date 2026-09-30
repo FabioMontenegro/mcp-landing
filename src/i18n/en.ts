@@ -5,7 +5,7 @@ export const en: LandingT = {
   dir: 'ltr',
   meta: {
     title: 'Enable Abilities for MCP — Real AI access to your WordPress',
-    description: '101 abilities so Claude, Copilot, Cursor or any MCP client can read and write your WordPress directly.',
+    description: '109 abilities so Claude, Copilot, Cursor or any MCP client can read and write your WordPress directly.',
   },
   nav: {
     logo: 'Enable Abilities for MCP',
@@ -20,7 +20,7 @@ export const en: LandingT = {
   hero: {
     eyebrow: 'WordPress × MCP',
     h1: 'What you ask your AI to do, it now does inside WordPress.',
-    subhead: '101 abilities so Claude, Copilot, Cursor or any MCP client can read and write your site directly — no external APIs, no copy-paste.',
+    subhead: '109 abilities so Claude, Copilot, Cursor or any MCP client can read and write your site directly — no external APIs, no copy-paste.',
     cta1: 'Install free on WordPress.org',
     cta2: 'View all abilities →',
     terminal: {
@@ -46,7 +46,7 @@ export const en: LandingT = {
   stats: [
     { num: '41K+',  label: 'Total downloads' },
     { num: '4K+',   label: 'Active sites' },
-    { num: '101+',  label: 'Abilities' },
+    { num: '109+',  label: 'Abilities' },
     { num: '★ 5/5', label: '12 reviews on wp.org', accent: true },
   ],
   compare: {
