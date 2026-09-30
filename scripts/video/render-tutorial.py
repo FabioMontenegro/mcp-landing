@@ -203,9 +203,10 @@ class Renderer:
             d["x"] = x
         return d
 
-    def intro_card(self, out: Path, w=W, h=H, vertical=False):
+    def intro_card(self, out: Path, dur: float, w=W, h=H, vertical=False):
         i = self.cfg["intro"]
-        dur = self.cfg["short"]["intro_duration"] if vertical else i["duration"]
+        base = self.cfg["short"]["intro_duration"] if vertical else i["duration"]
+        kk = max(dur / base, 1.0)     # verse timing follows the (possibly longer) segment
         if vertical:
             head = ["One plugin", "to rule", "them all"]   # stacked headline for the narrow frame
             y = 700
@@ -215,20 +216,20 @@ class Renderer:
                 ls.append(self.L(t, "heading", 128, "text", y + 70 + k * 140, 0.15 + k * 0.1))
             vy = y + 70 + 3 * 140 + 60
             for k, t in enumerate(i["verse"]):
-                ls.append(self.L(t, "body", 40, "muted", vy + k * 62, 1.0 + k * 0.4, 0.4))
+                ls.append(self.L(t, "body", 40, "muted", vy + k * 62, (1.0 + k * 0.4) * kk, 0.4))
         else:
             ls = [self.L("⚡", "symbol", 72, "accent", 200, 0.0),
                   self.L(i["label"], "mono", 34, "accent", 300, 0.0),
                   self.L(i["headline"], "heading", 116, "text", 366, 0.15),
                   ]
             for k, t in enumerate(i["verse"]):
-                ls.append(self.L(t, "body", 36, "muted", 590 + k * 58, 1.1 + k * 0.6, 0.5))
+                ls.append(self.L(t, "body", 36, "muted", 590 + k * 58, (1.1 + k * 0.6) * kk, 0.5))
         self.card(out, w, h, dur, ls)
 
-    def outro_card(self, out: Path, vertical=False):
+    def outro_card(self, out: Path, dur: float, vertical=False):
         o = self.cfg["outro"]
         if vertical:
-            dur, w, h = self.cfg["short"]["outro_duration"], SW, SH
+            w, h = SW, SH
             ls = [self.L("⚡", "symbol", 110, "accent", 660, 0.0),
                   self.L(o["title"], "heading", 68, "text", 830, 0.2),
                   ]
@@ -240,7 +241,7 @@ class Renderer:
                   self.L(o["title"], "heading", 104, "text", 430, 0.2),
                   self.L(o["tagline"], "body", 46, "muted", 580, 0.7),
                   ]
-            self.card(out, W, H, o["duration"], ls, fade_out=o["fade_out"])
+            self.card(out, W, H, dur, ls, fade_out=o["fade_out"])
 
     # ---- ROI geometry for the Ken Burns move
     @staticmethod
@@ -267,9 +268,8 @@ class Renderer:
         return max(w, 0) * max(h, 0)
 
     # ---- one screenshot shot (YouTube frame)
-    def shot_clip(self, s: dict, idx: int, out: Path):
+    def shot_clip(self, s: dict, idx: int, out: Path, dur: float):
         margin, fs = 72, 46
-        dur = float(s["duration"])
         n = round(dur * self.fps)
         m = n - 1
         z = float(s["zoom"])
@@ -305,9 +305,7 @@ class Renderer:
                   "-filter_complex", graph, "-map", "[out]", "-frames:v", n, *self.enc_mid(), out])
 
     # ---- one screenshot shot (vertical Short)
-    def short_clip(self, s: dict, idx: int, out: Path):
-        sc = self.cfg["short"]
-        dur = float(sc["shot_duration"])
+    def short_clip(self, s: dict, idx: int, out: Path, dur: float):
         n = round(dur * self.fps)
         m = n - 1
         cx, cy, cw, ch = s.get("short_crop") or (s["roi"][0], s["roi"][1], s["roi"][2] - s["roi"][0], s["roi"][3] - s["roi"][1])
@@ -346,7 +344,7 @@ class Renderer:
                   *self.enc_mid(), out])
 
     # ---- join clips with crossfades + music bed
-    def music_filter(self, mp: Path, total: float, src: str) -> str:
+    def music_filter(self, mp: Path, total: float, src: str, label: str = "a", duck: str | None = None) -> str:
         mu = self.cfg["music"]
         dur = float(json.loads(self.run([self.ffprobe, "-v", "error", "-show_entries", "format=duration", "-of", "json", mp],
                                         capture=True))["format"]["duration"])
@@ -355,22 +353,100 @@ class Renderer:
         return (f"[{src}]aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo,"
                 f"aloop=loop=-1:size={size},atrim=end={fnum(total)},asetpts=PTS-STARTPTS,"
                 f"volume={fnum(float(mu['volume_db']))}dB,afade=t=in:st=0:d={fnum(fi)},"
-                f"afade=t=out:st={fnum(max(0.0, total - fo))}:d={fnum(fo)}[a]")
+                f"afade=t=out:st={fnum(max(0.0, total - fo))}:d={fnum(fo)}"
+                + (f",volume='{duck}':eval=frame" if duck else "") + f"[{label}]")
 
-    def join(self, clips: list[Path], xf: float, out: Path):
+    # ---- narration
+    def voice_file(self, v):
+        if not v:
+            return None
+        p = Path(v)
+        p = p if p.is_absolute() else (self.cfg_dir / p)
+        if not p.exists():
+            raise SystemExit(f"voice file not found: {p}")
+        return p
+
+    def wav_dur(self, p: Path) -> float:
+        return float(json.loads(self.run([self.ffprobe, "-v", "error", "-show_entries", "format=duration", "-of", "json", p],
+                                         capture=True))["format"]["duration"])
+
+    def seg_dur(self, base: float, voice) -> float:
+        """Segment length: the configured one, or lead-in + voice + tail when the voice needs more. Frame-aligned."""
+        vp = self.voice_file(voice)
+        d = float(base)
+        if vp:
+            vc = self.cfg["voice"]
+            d = max(d, vc["lead"] + self.wav_dur(vp) + vc["tail"])
+        return -(-round(d * self.fps * 1000) // 1000) / self.fps
+
+    def integrated_lufs(self, p: Path) -> float:
+        res = subprocess.run([self.ffmpeg, "-hide_banner", "-nostats", "-i", str(p), "-af", "ebur128=peak=none",
+                              "-f", "null", "-"], capture_output=True)
+        txt = res.stderr.decode("utf-8", "replace")
+        return float(txt.rsplit("I:", 1)[1].split("LUFS")[0])
+
+    def voice_track(self, voices: list, starts: list, total: float, out: Path) -> list:
+        """Mix the narration lines at their start times into one 48 kHz stereo WAV normalised to the target LUFS.
+        Returns the (start, end) speaking intervals."""
+        vc = self.cfg["voice"]
+        args, graph, spans, k = [self.ffmpeg, "-v", "error", "-y"], [], [], 0
+        for v, st in zip(voices, starts):
+            vp = self.voice_file(v)
+            if not vp:
+                continue
+            t0 = st + vc["lead"]
+            args += ["-i", vp]
+            graph.append(f"[{k}:a]aformat=sample_rates=48000:channel_layouts=stereo,adelay={int(round(t0 * 1000))}:all=1[v{k}]")
+            spans.append((t0, t0 + self.wav_dur(vp)))
+            k += 1
+        mix = "".join(f"[v{i}]" for i in range(k))
+        graph.append(f"{mix}amix=inputs={k}:normalize=0:dropout_transition=0,apad,atrim=end={fnum(total)}[o]")
+        raw = self.build / "voice_raw.wav"
+        self.run(args + ["-filter_complex", ";".join(graph), "-map", "[o]", "-c:a", "pcm_s16le", raw])
+        gain = float(vc["lufs"]) - self.integrated_lufs(raw)
+        self.run([self.ffmpeg, "-v", "error", "-y", "-i", raw, "-af", f"volume={gain:.2f}dB,alimiter=limit=0.9:level=disabled",
+                  "-c:a", "pcm_s16le", out])
+        print(f"  voice: {k} lines, gain {gain:+.1f} dB -> {self.integrated_lufs(out):.1f} LUFS")
+        return spans
+
+    def join(self, clips: list[Path], xf: float, out: Path, voices: list | None = None):
         lens = [round(float(self.probe(c)["format"]["duration"]) * self.fps) / self.fps for c in clips]
         args = [self.ffmpeg, "-v", "error", "-y"]
         for c in clips:
             args += ["-i", c]
         graph, prev, acc = [], "0:v", lens[0]
+        starts = [0.0]
         for i in range(1, len(clips)):
+            starts.append(acc - xf)
             graph.append(f"[{prev}][{i}:v]xfade=transition=fade:duration={fnum(xf)}:offset={fnum(acc - xf)}[x{i}]")
             prev, acc = f"x{i}", acc + lens[i] - xf
         graph.append(f"[{prev}]format=yuv420p[v]")
         mp = Path(self.cfg["music"]["path"]) if self.cfg["music"].get("path") else None
+        has_voice = bool(voices) and any(voices)
+        if has_voice:
+            vc = self.cfg["voice"]
+            vwav = self.build / f"voice_{out.stem.split(' - ')[-1]}.wav"
+            spans = self.voice_track(voices, starts, acc, vwav)
+            for a_, b_ in zip(spans, spans[1:]):
+                if b_[0] <= a_[1]:
+                    raise SystemExit(f"voice lines overlap: {a_} / {b_}")
+            print("  voice spans: " + ", ".join(f"{a_:.2f}-{b_:.2f}" for a_, b_ in spans))
+            r = float(vc["ramp"])
+            g = 10 ** (-float(vc["duck_db"]) / 20)
+            env = [f"clip(min((t-{fnum(a_ - r)})/{r},({fnum(b_ + r)}-t)/{r}),0,1)" for a_, b_ in spans]
+            d = env[0]
+            for e in env[1:]:
+                d = f"max({d},{e})"
+            duck = f"1-(1-{g:.4f})*{d}"
         if mp and mp.exists():
             args += ["-i", mp]
-            graph.append(self.music_filter(mp, acc, f"{len(clips)}:a"))
+            if has_voice:
+                args += ["-i", vwav]
+                graph.append(self.music_filter(mp, acc, f"{len(clips)}:a", "m", duck))
+                graph.append(f"[m][{len(clips) + 1}:a]amix=inputs=2:normalize=0:duration=first,"
+                             f"alimiter=limit=0.95:level=disabled[a]")
+            else:
+                graph.append(self.music_filter(mp, acc, f"{len(clips)}:a"))
             audio = ["-map", "[a]", "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2"]
         else:
             print("  ! no music track found, rendering with silence")
@@ -380,39 +456,49 @@ class Renderer:
         return acc
 
     # ---- deliverables
+    def timeline(self, vertical: bool):
+        """Per-segment durations and voices: intro, shots, outro."""
+        sc, i, o = self.cfg["short"], self.cfg["intro"], self.cfg["outro"]
+        segs = [(sc["intro_duration"] if vertical else i["duration"], i.get("voice"))]
+        segs += [(sc["shot_duration"] if vertical else s["duration"], s.get("voice")) for s in self.shots]
+        segs += [(sc["outro_duration"] if vertical else o["duration"], o.get("voice"))]
+        return [self.seg_dur(d, v) for d, v in segs], [v for _, v in segs]
+
     def render_youtube(self) -> Path:
+        durs, voices = self.timeline(False)
         parts = []
         p = self.build / "yt_intro.mp4"
-        self.intro_card(p)
+        self.intro_card(p, durs[0])
         parts.append(p)
         for i, s in enumerate(self.shots, start=1):
             p = self.build / f"yt_shot_{i:02d}.mp4"
-            self.shot_clip(s, i, p)
+            self.shot_clip(s, i, p, durs[i])
             parts.append(p)
         p = self.build / "yt_outro.mp4"
-        self.outro_card(p)
+        self.outro_card(p, durs[-1])
         parts.append(p)
         out = self.out_dir / f"{self.name} - youtube.mp4"
-        total = self.join(parts, float(self.cfg["crossfade"]), out)
-        print(f"  timeline {total:.2f}s")
+        total = self.join(parts, float(self.cfg["crossfade"]), out, voices)
+        print(f"  segments {[round(d, 2) for d in durs]}  timeline {total:.2f}s")
         return out
 
     def render_short(self) -> Path:
         sc = self.cfg["short"]
+        durs, voices = self.timeline(True)
         parts = []
         p = self.build / "sh_intro.mp4"
-        self.intro_card(p, SW, SH, vertical=True)
+        self.intro_card(p, durs[0], SW, SH, vertical=True)
         parts.append(p)
         for i, s in enumerate(self.shots, start=1):
             p = self.build / f"sh_shot_{i:02d}.mp4"
-            self.short_clip(s, i, p)
+            self.short_clip(s, i, p, durs[i])
             parts.append(p)
         p = self.build / "sh_outro.mp4"
-        self.outro_card(p, vertical=True)
+        self.outro_card(p, durs[-1], vertical=True)
         parts.append(p)
         out = self.out_dir / f"{self.name} - short.mp4"
-        total = self.join(parts, float(sc["crossfade"]), out)
-        print(f"  timeline {total:.2f}s")
+        total = self.join(parts, float(sc["crossfade"]), out, voices)
+        print(f"  segments {[round(d, 2) for d in durs]}  timeline {total:.2f}s")
         if total > sc["max_duration"]:
             raise SystemExit(f"short is {total:.1f}s, over the {sc['max_duration']}s limit")
         return out

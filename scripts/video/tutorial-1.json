@@ -19,8 +19,14 @@
     "heading": "E:/Workspace/claude/Pixnana-full-project/marketing/youtube/pipeline/assets/BricolageGrotesque-Bold.ttf",
     "body": "E:/Workspace/claude/Pixnana-full-project/marketing/youtube/pipeline/assets/PlusJakartaSans-Medium.ttf",
     "caption": "E:/Workspace/claude/Pixnana-full-project/marketing/youtube/pipeline/assets/PlusJakartaSans-SemiBold.ttf",
-    "mono": ["C:/Windows/Fonts/CascadiaMono.ttf", "C:/Windows/Fonts/consola.ttf"],
-    "symbol": ["C:/Windows/Fonts/seguiemj.ttf", "C:/Windows/Fonts/seguisym.ttf"]
+    "mono": [
+      "C:/Windows/Fonts/CascadiaMono.ttf",
+      "C:/Windows/Fonts/consola.ttf"
+    ],
+    "symbol": [
+      "C:/Windows/Fonts/seguiemj.ttf",
+      "C:/Windows/Fonts/seguisym.ttf"
+    ]
   },
   "music": {
     "path": "F:/Mis ideas/pixnana/Videos/music/sigmamusicart-no-copyright-music-537751.mp3",
@@ -37,16 +43,21 @@
       "one plugin to find them,",
       "one connection to bring them all",
       "and in one dashboard bind them."
-    ]
+    ],
+    "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-01.wav"
   },
   "outro": {
     "duration": 4.0,
     "title": "mcp.fabiomontenegro.com",
     "tagline": "Free & open source on WordPress.org",
-    "fade_out": 1.0
+    "fade_out": 1.0,
+    "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-08.wav"
   },
   "poster": {
-    "headline": ["One plugin", "to rule them all"],
+    "headline": [
+      "One plugin",
+      "to rule them all"
+    ],
     "inset": "05-thirdparty.png",
     "url": "mcp.fabiomontenegro.com"
   },
@@ -55,48 +66,121 @@
     "outro_duration": 3.0,
     "crossfade": 0.3,
     "shot_duration": 5.2,
-    "max_duration": 45
+    "max_duration": 60
   },
   "shots": [
     {
       "file": "02-abilities.png",
       "caption": "283 abilities on this site, one dashboard",
-      "roi": [270, 290, 1565, 810],
-      "short_crop": [270, 285, 1300, 520]
+      "roi": [
+        270,
+        290,
+        1565,
+        810
+      ],
+      "short_crop": [
+        270,
+        285,
+        1300,
+        520
+      ],
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-02.wav"
     },
     {
       "file": "03-toggles.png",
       "caption": "Turn every ability on or off, one by one",
-      "roi": [290, 250, 1100, 800],
-      "short_crop": [290, 250, 860, 640]
+      "roi": [
+        290,
+        250,
+        1100,
+        800
+      ],
+      "short_crop": [
+        290,
+        250,
+        860,
+        640
+      ],
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-03.wav"
     },
     {
       "file": "05-thirdparty.png",
       "caption": "Other plugins' abilities? Detected automatically",
-      "roi": [270, 335, 1565, 820],
-      "short_crop": [270, 335, 1300, 490]
+      "roi": [
+        270,
+        335,
+        1565,
+        820
+      ],
+      "short_crop": [
+        270,
+        335,
+        1300,
+        490
+      ],
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-04.wav"
     },
     {
       "file": "04-bricks.png",
       "caption": "170 Bricks abilities. Same toggles, same connection",
-      "roi": [270, 90, 1565, 640],
-      "short_crop": [270, 95, 1300, 540]
+      "roi": [
+        270,
+        90,
+        1565,
+        640
+      ],
+      "short_crop": [
+        270,
+        95,
+        1300,
+        540
+      ],
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-05.wav"
     },
     {
       "file": "01-connection.png",
       "caption": "Connect Claude with one URL. No local setup",
-      "roi": [290, 430, 1540, 715],
-      "short_crop": [290, 430, 1260, 290]
+      "roi": [
+        290,
+        430,
+        1540,
+        715
+      ],
+      "short_crop": [
+        290,
+        430,
+        1260,
+        290
+      ],
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-06.wav"
     },
     {
       "file": "06-activity.png",
       "caption": "Every MCP call is logged per user",
-      "roi": [290, 430, 1540, 760],
-      "short_crop": [290, 430, 1260, 345]
+      "roi": [
+        290,
+        430,
+        1540,
+        760
+      ],
+      "short_crop": [
+        290,
+        430,
+        1260,
+        345
+      ],
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-07.wav"
     }
   ],
   "shot_defaults": {
     "duration": 5.8,
     "zoom": 1.2
+  },
+  "voice": {
+    "lead": 0.35,
+    "tail": 0.6,
+    "lufs": -16,
+    "duck_db": 10,
+    "ramp": 0.3
   }
 }
