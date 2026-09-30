@@ -1,0 +1,112 @@
+---
+import type { LandingT } from '../i18n/es';
+interface Props { t: LandingT }
+const { t } = Astro.props;
+---
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">{t.reviews.eyebrow}</p>
+      <h2>{t.reviews.h2}</h2>
+    </div>
+    <div class="reviews-grid">
+      {t.reviews.items.map(r => (
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <blockquote>"{r.text}"</blockquote>
+          <cite>
+            <strong>{r.title}</strong>
+            <span>@{r.name} · WordPress.org</span>
+          </cite>
+        </div>
+      ))}
+    </div>
+    <div class="reviews-footer">
+      <a
+        href="https://wordpress.org/support/plugin/enable-abilities-for-mcp/reviews/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="reviews-link"
+      >{t.reviews.link}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+.reviews { padding: 5rem 0; background: var(--surface); }
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: 2.75rem;
+}
+
+.review-card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.stars {
+  color: var(--accent);
+  font-size: .9rem;
+  letter-spacing: .05em;
+}
+
+blockquote {
+  font-size: .875rem;
+  color: var(--ink-2);
+  line-height: 1.65;
+  flex: 1;
+}
+
+cite {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  font-style: normal;
+  border-top: 1px solid var(--border);
+  padding-top: .75rem;
+  margin-top: .25rem;
+}
+
+cite strong {
+  font-size: .78rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+cite span {
+  font-family: var(--mono);
+  font-size: .7rem;
+  color: var(--fog);
+}
+
+.reviews-footer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.reviews-link {
+  font-family: var(--mono);
+  font-size: .75rem;
+  color: var(--accent);
+  letter-spacing: .04em;
+  transition: opacity .15s;
+}
+
+.reviews-link:hover { opacity: .75; }
+
+@media (max-width: 860px) {
+  .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .reviews-grid { grid-template-columns: 1fr; }
+}
+</style>
