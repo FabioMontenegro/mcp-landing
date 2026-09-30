@@ -24,7 +24,7 @@ Publish a browsable directory of every plugin ability (EN `/abilities/`, ES `/es
 - [x] T2 Categories grid data-driven + Ko-fi collision fix — delegated (writer trigger: 2+ non-trivial files)
 - [x] T3 Directory pages EN/ES + nav — delegated (same writer)
 - [x] T4 Browser verification (desktop + mobile, EN + ES, filters) — inline. Found and fixed: "1 abilities" plural, search now includes section/plugin names ("woo" 1 → 8 hits), mobile active chip off-by-one (IntersectionObserver replaced with scroll-position check), native scrollbar on chip row hidden. Verified: 21 cards equal width (253px @1440), 112 rows, filters 13 destructive, empty state, `/` shortcut, deep link #woocommerce, light + dark, no horizontal scroll at 375px.
-- [ ] T5 Deploy after user approval of count copy
+- [x] T5 Deploy — count updated to 109 (24594db), live version 65d1ee44, verified 112 rows on /abilities/, /es/abilities/ 200, home shows 109+
 
 ## Checks
 - `npm run build` passes; browser check of grid widths, anchors, search/filter, dark mode, 375px width.
