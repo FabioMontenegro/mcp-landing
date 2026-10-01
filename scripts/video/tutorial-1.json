@@ -44,14 +44,16 @@
       "one connection to bring them all",
       "and in one dashboard bind them."
     ],
-    "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-01.wav"
+    "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-01.wav",
+    "avatar": "F:/Mis ideas/enable-abilities/Videos/avatar/clips/line-01.mp4"
   },
   "outro": {
     "duration": 4.0,
     "title": "mcp.fabiomontenegro.com",
     "tagline": "Free & open source on WordPress.org",
     "fade_out": 1.0,
-    "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-08.wav"
+    "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-08.wav",
+    "avatar": "F:/Mis ideas/enable-abilities/Videos/avatar/clips/line-08.mp4"
   },
   "poster": {
     "headline": [
@@ -84,7 +86,8 @@
         1300,
         520
       ],
-      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-02.wav"
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-02.wav",
+      "avatar": "F:/Mis ideas/enable-abilities/Videos/avatar/clips/line-02.mp4"
     },
     {
       "file": "03-toggles.png",
@@ -101,7 +104,8 @@
         860,
         640
       ],
-      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-03.wav"
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-03.wav",
+      "avatar": "F:/Mis ideas/enable-abilities/Videos/avatar/clips/line-03.mp4"
     },
     {
       "file": "05-thirdparty.png",
@@ -118,7 +122,8 @@
         1300,
         490
       ],
-      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-04.wav"
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-04.wav",
+      "avatar": "F:/Mis ideas/enable-abilities/Videos/avatar/clips/line-04.mp4"
     },
     {
       "file": "04-bricks.png",
@@ -135,7 +140,8 @@
         1300,
         540
       ],
-      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-05.wav"
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-05.wav",
+      "avatar": "F:/Mis ideas/enable-abilities/Videos/avatar/clips/line-05.mp4"
     },
     {
       "file": "01-connection.png",
@@ -152,7 +158,8 @@
         1260,
         290
       ],
-      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-06.wav"
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-06.wav",
+      "avatar": "F:/Mis ideas/enable-abilities/Videos/avatar/clips/line-06.mp4"
     },
     {
       "file": "06-activity.png",
@@ -169,7 +176,8 @@
         1260,
         345
       ],
-      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-07.wav"
+      "voice": "F:/Mis ideas/enable-abilities/Videos/voice/tutorial-1/af_heart-07.wav",
+      "avatar": "F:/Mis ideas/enable-abilities/Videos/avatar/clips/line-07.mp4"
     }
   ],
   "shot_defaults": {
@@ -182,5 +190,22 @@
     "lufs": -16,
     "duck_db": 10,
     "ramp": 0.3
+  },
+  "avatar": {
+    "enabled": true,
+    "suffix": " - avatar",
+    "crop": [
+      80,
+      0,
+      360
+    ],
+    "ring": 5,
+    "margin": 48,
+    "youtube": {
+      "size": 290
+    },
+    "short": {
+      "size": 320
+    }
   }
 }

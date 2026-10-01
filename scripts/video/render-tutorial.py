@@ -71,7 +71,8 @@ def first_existing(candidates) -> Path:
 
 
 class Renderer:
-    def __init__(self, cfg: dict, cfg_dir: Path, keep_build: bool):
+    def __init__(self, cfg: dict, cfg_dir: Path, keep_build: bool, no_avatar: bool = False):
+        self.no_avatar = no_avatar
         self.cfg = cfg
         self.cfg_dir = cfg_dir
         self.keep_build = keep_build
@@ -268,7 +269,7 @@ class Renderer:
         return max(w, 0) * max(h, 0)
 
     # ---- one screenshot shot (YouTube frame)
-    def shot_clip(self, s: dict, idx: int, out: Path, dur: float):
+    def shot_clip(self, s: dict, idx: int, out: Path, dur: float, pill_right: int = W - 72):
         margin, fs = 72, 46
         n = round(dur * self.fps)
         m = n - 1
@@ -276,8 +277,8 @@ class Renderer:
         x0, y0, x1, y1 = s["roi"]
         rcx, rcy = (x0 + x1) / 2, (y0 + y1) / 2
         pill = self.build / f"pill_{idx:02d}.png"
-        pw, ph = self.make_pill(s["caption"], pill, fs, W - 2 * margin)
-        px = (W - pw) // 2
+        pw, ph = self.make_pill(s["caption"], pill, fs, pill_right - margin)
+        px = max(margin, min((W - pw) // 2, pill_right - pw))
         box = self.roi_out_box(s)
         pad = 20
         roi_box = (box[0] - pad, box[1] - pad, box[2] + pad, box[3] + pad)
@@ -305,7 +306,7 @@ class Renderer:
                   "-filter_complex", graph, "-map", "[out]", "-frames:v", n, *self.enc_mid(), out])
 
     # ---- one screenshot shot (vertical Short)
-    def short_clip(self, s: dict, idx: int, out: Path, dur: float):
+    def short_clip(self, s: dict, idx: int, out: Path, dur: float, url_left: bool = False):
         n = round(dur * self.fps)
         m = n - 1
         cx, cy, cw, ch = s.get("short_crop") or (s["roi"][0], s["roi"][1], s["roi"][2] - s["roi"][0], s["roi"][3] - s["roi"][1])
@@ -332,7 +333,10 @@ class Renderer:
                  f"drawbox=x=0:y={fy + fh}:w={SW}:h=3:color={self.c['accent']}@0.9:t=fill[c1]"]
         prev = "c1"
         extra = [self.L(self.cfg["intro"]["label"], "mono", 34, "accent", 150, 0.0, 0.3)]
-        extra.append(self.L(self.cfg["outro"]["title"], "mono", 36, "muted", 1640, 0.0, 0.3))
+        if url_left:
+            extra.append(self.L(self.cfg["outro"]["title"], "mono", 32, "muted", 1690, 0.0, 0.3, x="48"))
+        else:
+            extra.append(self.L(self.cfg["outro"]["title"], "mono", 36, "muted", 1640, 0.0, 0.3))
         for k, t in enumerate(cap_lines):
             extra.append(self.L(t, "heading", size, "text", f"{top + k * lh:.0f}", 0.15 + k * 0.08, 0.4))
         for k, ln in enumerate(extra):
@@ -409,7 +413,33 @@ class Renderer:
         print(f"  voice: {k} lines, gain {gain:+.1f} dB -> {self.integrated_lufs(out):.1f} LUFS")
         return spans
 
-    def join(self, clips: list[Path], xf: float, out: Path, voices: list | None = None):
+    def avatar_geometry(self, vertical: bool) -> dict:
+        av = self.cfg["avatar"]
+        fw, fh = (SW, SH) if vertical else (W, H)
+        d = int(av["short" if vertical else "youtube"]["size"])
+        ring, margin = int(av["ring"]), int(av["margin"])
+        outer = d + 2 * ring
+        return {"d": d, "ring": ring, "outer": outer, "x": fw - margin - outer, "y": fh - margin - outer}
+
+    def bubble_assets(self, d: int, ring: int):
+        """Backdrop (soft shadow + accent ring disc) and a circular gray mask for the video."""
+        pad = 40
+        pdim = d + 2 * ring + 2 * pad
+        c = pdim / 2 - 0.5
+        ro = d / 2 + ring
+        bd, mk = self.build / f"bubble_bd_{d}.png", self.build / f"bubble_mask_{d}.png"
+        graph = (f"color=c=black:s={pdim}x{pdim}:r=1:d=1,format=gbrap,"
+                 f"geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='150*clip({ro}+0.5-hypot(X-{c},Y-{c}-8),0,1)',gblur=sigma=11[sh];"
+                 f"color=c={self.c['accent']}:s={pdim}x{pdim}:r=1:d=1,format=gbrap,"
+                 f"geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='255*clip({ro}+0.5-hypot(X-{c},Y-{c}),0,1)'[ring];"
+                 f"[sh][ring]overlay=format=auto,format=rgba[out]")
+        self.run([self.ffmpeg, "-v", "error", "-y", "-filter_complex", graph, "-map", "[out]", "-frames:v", "1", bd])
+        cm = d / 2 - 0.5
+        self.run([self.ffmpeg, "-v", "error", "-y", "-f", "lavfi", "-i", f"color=c=black:s={d}x{d}:r=1:d=1", "-vf",
+                  f"format=gray,geq=lum='255*clip({d / 2}+0.5-hypot(X-{cm},Y-{cm}),0,1)'", "-frames:v", "1", mk])
+        return bd, mk, pad
+
+    def join(self, clips: list[Path], xf: float, out: Path, voices: list | None = None, avatar: dict | None = None):
         lens = [round(float(self.probe(c)["format"]["duration"]) * self.fps) / self.fps for c in clips]
         args = [self.ffmpeg, "-v", "error", "-y"]
         for c in clips:
@@ -420,12 +450,12 @@ class Renderer:
             starts.append(acc - xf)
             graph.append(f"[{prev}][{i}:v]xfade=transition=fade:duration={fnum(xf)}:offset={fnum(acc - xf)}[x{i}]")
             prev, acc = f"x{i}", acc + lens[i] - xf
-        graph.append(f"[{prev}]format=yuv420p[v]")
+        graph.append(f"[{prev}]format=yuv420p[{'v0' if avatar else 'v'}]")
         mp = Path(self.cfg["music"]["path"]) if self.cfg["music"].get("path") else None
         has_voice = bool(voices) and any(voices)
         if has_voice:
             vc = self.cfg["voice"]
-            vwav = self.build / f"voice_{out.stem.split(' - ')[-1]}.wav"
+            vwav = self.build / f"voice_{'short' if 'short' in out.name else 'youtube'}.wav"
             spans = self.voice_track(voices, starts, acc, vwav)
             for a_, b_ in zip(spans, spans[1:]):
                 if b_[0] <= a_[1]:
@@ -452,6 +482,36 @@ class Renderer:
             print("  ! no music track found, rendering with silence")
             args += ["-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo"]
             audio = ["-map", f"{len(clips)}:a", "-c:a", "aac", "-b:a", "96k", "-ar", "48000", "-t", fnum(acc)]
+        if avatar:
+            if not has_voice or len(avatar["clips"]) != len(spans):
+                raise SystemExit("avatar needs a clip for every voice line")
+            ac, g = self.cfg["avatar"], avatar["geom"]
+            d, ring, nfps = g["d"], g["ring"], self.fps
+            bd, mk, pad = self.bubble_assets(d, ring)
+            cx, cy, cw = (int(v) for v in ac["crop"])
+            base = args.count("-i")
+            for clip in avatar["clips"]:
+                args += ["-i", clip]
+            args += ["-loop", "1", "-framerate", nfps, "-t", fnum(acc), "-i", bd,
+                     "-loop", "1", "-framerate", nfps, "-t", fnum(acc), "-i", mk]
+            k = len(avatar["clips"])
+            cum = [round(a_ * nfps) for a_, _ in spans] + [round(acc * nfps)]
+            print("  avatar clip starts (s): " + ", ".join(f"{c / nfps:.2f}" for c in cum[:-1]))
+            pieces = []
+            for j in range(k):
+                first = cum[0] if j == 0 else 0
+                frames = (cum[j + 1] - cum[j]) + first
+                graph.append(f"[{base + j}:v]fps={nfps},crop={cw}:{cw}:{cx}:{cy},scale={d}:{d}:flags=lanczos,setsar=1,format=yuv420p,"
+                             f"setpts=PTS-STARTPTS,tpad=start_mode=clone:start_duration={fnum(first / nfps)}:"
+                             f"stop_mode=clone:stop_duration=30,trim=end_frame={frames},setpts=PTS-STARTPTS[b{j}]")
+                pieces.append(f"[b{j}]")
+            fo = float(self.cfg["outro"]["fade_out"]) if not avatar.get("vertical") else 0.8
+            fades = (f"fade=t=in:st=0:d=0.6:alpha=1,fade=t=out:st={fnum(acc - fo)}:d={fnum(fo)}:alpha=1")
+            graph.append("".join(pieces) + f"concat=n={k}:v=1:a=0[bub]")
+            graph.append(f"[bub][{base + k + 1}:v]alphamerge,format=yuva420p,{fades}[bubv]")
+            graph.append(f"[{base + k}:v]format=rgba,{fades}[bdv]")
+            graph.append(f"[v0][bdv]overlay=x={g['x'] - pad}:y={g['y'] - pad}:format=auto[v1]")
+            graph.append(f"[v1][bubv]overlay=x={g['x'] + ring}:y={g['y'] + ring}:format=auto,format=yuv420p[v]")
         self.run(args + ["-filter_complex", ";".join(graph), "-map", "[v]", *audio, *self.enc_final(), out])
         return acc
 
@@ -464,40 +524,59 @@ class Renderer:
         segs += [(sc["outro_duration"] if vertical else o["duration"], o.get("voice"))]
         return [self.seg_dur(d, v) for d, v in segs], [v for _, v in segs]
 
+    def avatar_on(self) -> bool:
+        return bool(self.cfg.get("avatar", {}).get("enabled")) and not self.no_avatar
+
+    def avatar_clips(self):
+        segs = [self.cfg["intro"]] + self.shots + [self.cfg["outro"]]
+        return [str(self.voice_file(x["avatar"])) for x in segs if x.get("avatar") and x.get("voice")]
+
+    def out_name(self, kind: str) -> Path:
+        suf = self.cfg["avatar"].get("suffix", " - avatar") if self.avatar_on() else ""
+        return self.out_dir / f"{self.name} - {kind}{suf}.mp4"
+
     def render_youtube(self) -> Path:
         durs, voices = self.timeline(False)
+        av, pill_right = None, W - 72
+        if self.avatar_on():
+            g = self.avatar_geometry(False)
+            av = {"clips": self.avatar_clips(), "geom": g}
+            pill_right = g["x"] - 24
         parts = []
         p = self.build / "yt_intro.mp4"
         self.intro_card(p, durs[0])
         parts.append(p)
         for i, s in enumerate(self.shots, start=1):
             p = self.build / f"yt_shot_{i:02d}.mp4"
-            self.shot_clip(s, i, p, durs[i])
+            self.shot_clip(s, i, p, durs[i], pill_right)
             parts.append(p)
         p = self.build / "yt_outro.mp4"
         self.outro_card(p, durs[-1])
         parts.append(p)
-        out = self.out_dir / f"{self.name} - youtube.mp4"
-        total = self.join(parts, float(self.cfg["crossfade"]), out, voices)
+        out = self.out_name("youtube")
+        total = self.join(parts, float(self.cfg["crossfade"]), out, voices, av)
         print(f"  segments {[round(d, 2) for d in durs]}  timeline {total:.2f}s")
         return out
 
     def render_short(self) -> Path:
         sc = self.cfg["short"]
         durs, voices = self.timeline(True)
+        av = None
+        if self.avatar_on():
+            av = {"clips": self.avatar_clips(), "geom": self.avatar_geometry(True), "vertical": True}
         parts = []
         p = self.build / "sh_intro.mp4"
         self.intro_card(p, durs[0], SW, SH, vertical=True)
         parts.append(p)
         for i, s in enumerate(self.shots, start=1):
             p = self.build / f"sh_shot_{i:02d}.mp4"
-            self.short_clip(s, i, p, durs[i])
+            self.short_clip(s, i, p, durs[i], url_left=bool(av))
             parts.append(p)
         p = self.build / "sh_outro.mp4"
         self.outro_card(p, durs[-1], vertical=True)
         parts.append(p)
-        out = self.out_dir / f"{self.name} - short.mp4"
-        total = self.join(parts, float(sc["crossfade"]), out, voices)
+        out = self.out_name("short")
+        total = self.join(parts, float(sc["crossfade"]), out, voices, av)
         print(f"  segments {[round(d, 2) for d in durs]}  timeline {total:.2f}s")
         if total > sc["max_duration"]:
             raise SystemExit(f"short is {total:.1f}s, over the {sc['max_duration']}s limit")
@@ -562,6 +641,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("config")
     ap.add_argument("--only", default="youtube,short,poster", help="comma list: youtube,short,poster")
+    ap.add_argument("--no-avatar", action="store_true", help="ignore the avatar block (plain renders)")
     ap.add_argument("--keep-build", action="store_true", help="keep intermediate clips in <output_dir>/.build")
     a = ap.parse_args()
     cfg_path = Path(a.config).resolve()
@@ -569,7 +649,7 @@ def main():
     for k in ("name", "output_dir", "shots", "ffmpeg", "ffprobe"):
         if k not in cfg:
             raise SystemExit(f"config missing '{k}'")
-    Renderer(cfg, cfg_path.parent, a.keep_build).render({x.strip() for x in a.only.split(",")})
+    Renderer(cfg, cfg_path.parent, a.keep_build, a.no_avatar).render({x.strip() for x in a.only.split(",")})
 
 
 if __name__ == "__main__":

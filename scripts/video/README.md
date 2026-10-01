@@ -60,3 +60,7 @@ uv run --python 3.12 --with kokoro --with "misaki[en]" --with soundfile python t
 ```
 
 Then point each segment's `voice` at `OUT_DIR/af_heart-NN.wav` (01 = intro, 02.. = shots in order, last = outro).
+
+## Avatar bubble (optional)
+
+The `avatar` block in the JSON enables a circular presenter bubble (accent ring, soft shadow, bottom-right). Give `intro`, each shot and `outro` an `avatar` clip (one lip-synced clip per voice line, same order); `crop` is `[x, y, size]` in the clip, `youtube.size` / `short.size` the bubble diameter. Each clip starts on its voice line; between lines the last frame is held. Clip audio is ignored. Outputs get the `suffix` (`tutorial-1 - youtube - avatar.mp4`); the caption pill shifts left to stay clear of the bubble. Use `--no-avatar` for plain renders.
