@@ -1,6 +1,6 @@
 ---
 import type { LandingT } from '../i18n/es';
-import { ewpaCount } from '../data/sections';
+import { totalCount } from '../data/sections';
 interface Props { t: LandingT }
 const { t } = Astro.props;
 const r = t.ruleAll;
@@ -21,7 +21,7 @@ const r = t.ruleAll;
 
     <div class="rule-diagram" aria-label={r.diagramLabel} role="img">
       <ul class="rule-sources" aria-hidden="true">
-        <li><strong>{ewpaCount}</strong> {r.sources.builtIn}</li>
+        <li><strong>{totalCount}</strong> {r.sources.builtIn}</li>
         <li>Elementor</li>
         <li>Bricks</li>
         <li>Fluent Forms</li>

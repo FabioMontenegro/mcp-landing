@@ -1,12 +1,12 @@
 ---
 import type { LandingT } from '../i18n/es';
-import { sections, sectionName, sectionIcon, sectionCount, ewpaCount, sectionTotal } from '../data/sections';
+import { sections, sectionName, sectionIcon, sectionCount, totalCount, sectionTotal } from '../data/sections';
 interface Props { t: LandingT }
 const { t } = Astro.props;
 const lang = t.lang === 'es' ? 'es' : 'en';
 const base = lang === 'es' ? '/es/abilities/' : '/abilities/';
 const eyebrow = t.categories.eyebrow
-  .replace('{abilities}', String(ewpaCount))
+  .replace('{abilities}', String(totalCount))
   .replace('{sections}', String(sectionTotal));
 ---
 <section class="abl-cats" id="abilities">
