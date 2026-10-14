@@ -47,7 +47,7 @@ export const en: LandingT = {
     { num: '41K+',  label: 'Total downloads' },
     { num: '4K+',   label: 'Active sites' },
     { num: '112+',  label: 'Abilities' },
-    { num: '★ 5/5', label: '12 reviews on wp.org', accent: true },
+    { num: '★ 5/5', label: '13 reviews on wp.org', accent: true },
   ],
   compare: {
     eyebrow: 'The problem',
@@ -173,7 +173,7 @@ export const en: LandingT = {
   },
   reviews: {
     eyebrow: 'Loved on WordPress.org',
-    h2: '12 reviews. All 5 stars.',
+    h2: '13 reviews. All 5 stars.',
     link: 'Read all reviews on WordPress.org →',
     items: [
       {
@@ -187,9 +187,9 @@ export const en: LandingT = {
         text: 'The missing link to superpower your AI tool of choice. After installation Claude Code and Cursor can make changes to your website directly.',
       },
       {
-        name: 'matpacker',
-        title: 'Easy Access to AI',
-        text: 'The plugin delivers a quick and simple way to connect to AI assistants with a long list of abilities you can access, not just for WordPress but a bunch of different plugins.',
+        name: 'MeridianCS',
+        title: 'Just Perfect',
+        text: 'It works perfect. A quick setup and connected to Claude Pro with a long list of abilities you can access.',
       },
       {
         name: 'Luis Arreaza',
