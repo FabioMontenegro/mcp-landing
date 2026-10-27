@@ -42,10 +42,10 @@ export const es = {
     },
   },
   stats: [
-    { num: '41K+',  label: 'Descargas totales' },
-    { num: '4K+',   label: 'Sitios activos' },
+    { num: '60K+',  label: 'Descargas totales' },
+    { num: '5K+',   label: 'Sitios activos' },
     { num: '112+',  label: 'Abilities' },
-    { num: '★ 5/5', label: '13 reseñas en wp.org', accent: true },
+    { num: '★ 5/5', label: '17 reseñas en wp.org', accent: true },
   ],
   compare: {
     eyebrow: 'El problema',
@@ -171,7 +171,7 @@ export const es = {
   },
   reviews: {
     eyebrow: 'Amado en WordPress.org',
-    h2: '13 reseñas. Todas de 5 estrellas.',
+    h2: '17 reseñas. Todas de 5 estrellas.',
     link: 'Ver todas las reseñas en WordPress.org →',
     items: [
       {
@@ -204,11 +204,21 @@ export const es = {
         title: 'A big thank you for this work',
         text: 'The module works wonderfully with Claude. The Abilities are really handy. Thanks for taking the time to develop this type of MCP module.',
       },
+      {
+        name: 'csmisi',
+        title: 'MCP is a must',
+        text: 'For me this is my favorite MCP adapter, and I do not know why I haven\'t used it earlier, as it saves me a ton of work. Best in class',
+      },
+      {
+        name: 'eyeidea',
+        title: 'great tool, working well so far',
+        text: 'Like most we are using with Claude, integration and execution are working well.',
+      },
     ],
   },
   cta: {
     h2: 'Gratis. Open source. Sin suscripción.',
-    p: '41.000+ descargas y 4.000+ sitios activos en WordPress.org.',
+    p: '60.000+ descargas y 5.000+ sitios activos en WordPress.org.',
     btn: 'Instalar desde WordPress.org →',
     meta: 'WordPress 6.9+ · PHP 8.0+ · GPLv2 or later',
   },
