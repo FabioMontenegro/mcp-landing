@@ -44,10 +44,10 @@ export const en: LandingT = {
     },
   },
   stats: [
-    { num: '60K+',  label: 'Total downloads' },
-    { num: '5K+',   label: 'Active sites' },
+    { num: '68K+',  label: 'Total downloads' },
+    { num: '6K+',   label: 'Active sites' },
     { num: '112+',  label: 'Abilities' },
-    { num: '★ 5/5', label: '17 reviews on wp.org', accent: true },
+    { num: '★ 5/5', label: '18 reviews on wp.org', accent: true },
   ],
   compare: {
     eyebrow: 'The problem',
@@ -173,7 +173,7 @@ export const en: LandingT = {
   },
   reviews: {
     eyebrow: 'Loved on WordPress.org',
-    h2: '17 reviews. All 5 stars.',
+    h2: '18 reviews. All 5 stars.',
     link: 'Read all reviews on WordPress.org →',
     items: [
       {
@@ -220,7 +220,7 @@ export const en: LandingT = {
   },
   cta: {
     h2: 'Free. Open source. No subscription.',
-    p: '60,000+ downloads and 5,000+ active sites on WordPress.org.',
+    p: '68,000+ downloads and 6,000+ active sites on WordPress.org.',
     btn: 'Install from WordPress.org →',
     meta: 'WordPress 6.9+ · PHP 8.0+ · GPLv2 or later',
   },

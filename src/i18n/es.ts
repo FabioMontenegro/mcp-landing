@@ -42,10 +42,10 @@ export const es = {
     },
   },
   stats: [
-    { num: '60K+',  label: 'Descargas totales' },
-    { num: '5K+',   label: 'Sitios activos' },
+    { num: '68K+',  label: 'Descargas totales' },
+    { num: '6K+',   label: 'Sitios activos' },
     { num: '112+',  label: 'Abilities' },
-    { num: '★ 5/5', label: '17 reseñas en wp.org', accent: true },
+    { num: '★ 5/5', label: '18 reseñas en wp.org', accent: true },
   ],
   compare: {
     eyebrow: 'El problema',
@@ -171,7 +171,7 @@ export const es = {
   },
   reviews: {
     eyebrow: 'Amado en WordPress.org',
-    h2: '17 reseñas. Todas de 5 estrellas.',
+    h2: '18 reseñas. Todas de 5 estrellas.',
     link: 'Ver todas las reseñas en WordPress.org →',
     items: [
       {
@@ -218,7 +218,7 @@ export const es = {
   },
   cta: {
     h2: 'Gratis. Open source. Sin suscripción.',
-    p: '60.000+ descargas y 5.000+ sitios activos en WordPress.org.',
+    p: '68.000+ descargas y 6.000+ sitios activos en WordPress.org.',
     btn: 'Instalar desde WordPress.org →',
     meta: 'WordPress 6.9+ · PHP 8.0+ · GPLv2 or later',
   },

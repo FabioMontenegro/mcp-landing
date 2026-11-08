@@ -14,7 +14,7 @@
     "name": "Read (Query Only)",
     "requires": null,
     "abilities": [
-      { "key": "ewpa/get-posts", "label": "Get Posts", "type": "read", "description": "List posts filtered by status, category, count, and order." },
+      { "key": "ewpa/get-posts", "label": "Get Posts", "type": "read", "description": "List posts filtered by status, category, tag, search, custom field (key and value), count, and order." },
       { "key": "ewpa/get-post", "label": "Get Single Post", "type": "read", "description": "Get full post detail by ID, including content, meta data, and featured image." },
       { "key": "ewpa/get-categories", "label": "Get Categories", "type": "read", "description": "List all categories with ID, name, slug, and post count." },
       { "key": "ewpa/get-tags", "label": "Get Tags", "type": "read", "description": "List all tags with ID, name, slug, and post count." },
@@ -30,7 +30,7 @@
     "name": "Write (Create & Modify)",
     "requires": null,
     "abilities": [
-      { "key": "ewpa/create-post", "label": "Create Post", "type": "write", "description": "Create a post with title, content, categories, tags, and featured image." },
+      { "key": "ewpa/create-post", "label": "Create Post", "type": "write", "description": "Create a post with title, content, categories, tags, featured image, and custom fields written in the same call." },
       { "key": "ewpa/update-post", "label": "Update Post", "type": "write", "description": "Modify an existing post, updating only the fields you provide." },
       { "key": "ewpa/delete-post", "label": "Delete Post", "type": "destructive", "description": "Send a post to the trash or permanently delete it." },
       { "key": "ewpa/create-category", "label": "Create Category", "type": "write", "description": "Create a category with name, slug, description, and parent." },
