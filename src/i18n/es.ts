@@ -94,7 +94,7 @@ export const es = {
     eyebrow: 'Directorio de abilities',
     h1: 'Cada ability, documentada.',
     summary: '{abilities} abilities del plugin más {core} abilities del core de WordPress que puedes activar desde el mismo panel, agrupadas en {sections} secciones. Las de lectura se habilitan al instalar; las de escritura y las destructivas son opt-in.',
-    note: 'Las descripciones aparecen en inglés, tal como en el plugin.',
+    note: '',
     searchLabel: 'Buscar abilities',
     searchPlaceholder: 'Buscar por clave, nombre o descripción',
     searchHint: 'Pulsa / para buscar',

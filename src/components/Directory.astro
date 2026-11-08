@@ -1,7 +1,7 @@
 ---
 import type { LandingT } from '../i18n/es';
 import {
-  sections, sectionName, sectionIcon, sectionCount,
+  sections, sectionName, sectionIcon, sectionCount, abilityText,
   ewpaCount, sectionTotal, totalCount, typeCounts,
 } from '../data/sections';
 import type { AbilityType } from '../data/sections';
@@ -17,8 +17,8 @@ const summary = d.summary
   .replace('{core}', String(coreCount));
 const typeOrder: AbilityType[] = ['read', 'write', 'destructive'];
 const typeLabel = (k: AbilityType) => d.types[k];
-// Descriptions and labels come from the plugin and stay in English on the ES page.
-const srcLang = lang === 'es' ? 'en' : undefined;
+// Labels and descriptions are translated on the ES page; an untranslated one stays in English and is marked lang="en".
+const textLang = (translated: boolean) => (translated ? undefined : 'en');
 ---
 <main
   class="abl-dir"
@@ -84,14 +84,16 @@ const srcLang = lang === 'es' ? 'en' : undefined;
             </div>
           </header>
           <ul class="abl-rows">
-            {s.abilities.map((a) => (
+            {s.abilities.map((a) => {
+              const tx = abilityText(a, lang);
+              return (
               <li
                 class="abl-row"
                 data-type={a.type}
-                data-q={`${a.key} ${a.label} ${a.description} ${s.name} ${sectionName(s, lang)} ${s.requires ?? ''}`.toLowerCase()}
+                data-q={[a.key, a.label, a.description, ...(lang === 'es' && tx.translated ? [tx.label, tx.description] : []), s.name, sectionName(s, lang), s.requires ?? ''].join(' ').toLowerCase()}
               >
                 <div class="abl-row-top">
-                  <span class="abl-label" lang={srcLang}>{a.label}</span>
+                  <span class="abl-label" lang={textLang(tx.translated)}>{tx.label}</span>
                   <span class={`abl-pill abl-pill-${a.type}`}>{typeLabel(a.type)}</span>
                 </div>
                 <div class="abl-keyline">
@@ -101,9 +103,10 @@ const srcLang = lang === 'es' ? 'en' : undefined;
                     <span class="abl-copied" aria-live="polite"></span>
                   </button>
                 </div>
-                <p class="abl-desc" lang={srcLang}>{a.description}</p>
+                <p class="abl-desc" lang={textLang(tx.translated)}>{tx.description}</p>
               </li>
-            ))}
+              );
+            })}
           </ul>
         </section>
       ))}

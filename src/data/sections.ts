@@ -1,4 +1,5 @@
 import data from './abilities.json';
+import esData from './abilities.es.json';
 
 export type AbilityType = 'read' | 'write' | 'destructive';
 
@@ -47,6 +48,21 @@ export const sections: Section[] = data as Section[];
 
 export function sectionName(s: Section, lang: 'en' | 'es'): string {
   return sectionMeta[s.id]?.[lang] ?? s.name;
+}
+
+interface AbilityText { label: string; description: string }
+
+const esText = esData as Record<string, AbilityText>;
+
+/**
+ * Label and description in the page language. Spanish comes from abilities.es.json;
+ * an ability missing there falls back to the English text from the plugin.
+ */
+export function abilityText(a: Ability, lang: 'en' | 'es'): AbilityText & { translated: boolean } {
+  const es = lang === 'es' ? esText[a.key] : undefined;
+  return es
+    ? { label: es.label, description: es.description, translated: true }
+    : { label: a.label, description: a.description, translated: lang === 'en' };
 }
 
 export function sectionIcon(s: Section): string {
