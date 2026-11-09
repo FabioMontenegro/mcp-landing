@@ -18,6 +18,30 @@ const ogImage = `${origin}/og-${t.lang === 'es' ? 'es' : 'en'}-v3.png`;
 const ogAlt = t.lang === 'es'
   ? 'Un plugin para gobernarlos a todos: Enable Abilities for MCP conecta las abilities de WordPress, Elementor, Bricks y Fluent Forms con Claude, ChatGPT y Cursor.'
   : 'One plugin to rule them all: Enable Abilities for MCP connects abilities from WordPress, Elementor, Bricks and Fluent Forms to Claude, ChatGPT and Cursor.';
+
+// Structured data for the home pages only. Keep the rating in sync with the
+// WordPress.org figures shown in the reviews section.
+const softwareLd = path === '' ? {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Enable Abilities for MCP',
+  url: pageUrl,
+  description,
+  inLanguage: t.lang,
+  image: ogImage,
+  applicationCategory: 'DeveloperApplication',
+  applicationSubCategory: 'WordPress plugin',
+  operatingSystem: 'WordPress 6.9+, PHP 8.0+',
+  downloadUrl: 'https://wordpress.org/plugins/enable-abilities-for-mcp/',
+  license: 'https://www.gnu.org/licenses/gpl-2.0.html',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  aggregateRating: { '@type': 'AggregateRating', ratingValue: '5', bestRating: '5', ratingCount: '18' },
+  author: { '@type': 'Person', name: 'Fabio Montenegro', url: 'https://fabiomontenegro.com' },
+  sameAs: [
+    'https://wordpress.org/plugins/enable-abilities-for-mcp/',
+    'https://github.com/FabioMontenegro/enable-abilities-for-mcp',
+  ],
+} : null;
 ---
 
 <!doctype html>
@@ -47,6 +71,8 @@ const ogAlt = t.lang === 'es'
     <link rel="alternate" hreflang="es" href={esUrl} />
     <link rel="alternate" hreflang="x-default" href={enUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    {softwareLd && <script type="application/ld+json" set:html={JSON.stringify(softwareLd)} />}
     <!-- Cloudflare Web Analytics: cookieless; dedicated site for this subdomain (the zone's auto-injection covers the apex only). -->
     <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"0176eeb63ca94f8fb4f09051c11a236e"}'></script>
   </head>
