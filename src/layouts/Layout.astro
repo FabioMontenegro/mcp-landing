@@ -47,6 +47,8 @@ const ogAlt = t.lang === 'es'
     <link rel="alternate" hreflang="es" href={esUrl} />
     <link rel="alternate" hreflang="x-default" href={enUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Cloudflare Web Analytics: cookieless; dedicated site for this subdomain (the zone's auto-injection covers the apex only). -->
+    <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"0176eeb63ca94f8fb4f09051c11a236e"}'></script>
   </head>
   <body>
     <slot />
