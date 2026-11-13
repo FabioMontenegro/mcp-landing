@@ -23,6 +23,8 @@
   "ewpa/reply-comment": { "label": "Responder comentario", "description": "Responde a un comentario existente como el usuario autenticado." },
   "ewpa/update-comment": { "label": "Actualizar comentario", "description": "Actualiza el contenido, el nombre del autor, el correo o el usuario vinculado de un comentario." },
   "ewpa/upload-image": { "label": "Subir imagen desde URL", "description": "Descarga una imagen desde una URL a la biblioteca de medios y devuelve su ID de adjunto." },
+  "ewpa/create-upload-link": { "label": "Crear enlace de subida", "description": "Sube una imagen desde el computador del usuario a la biblioteca de medios mediante un enlace de un solo uso, sin que el archivo pase por la conversación." },
+  "ewpa/get-upload-status": { "label": "Consultar estado de subida", "description": "Indica si ya llegó el archivo de un enlace de subida y devuelve su ID de adjunto y su URL." },
   "ewpa/duplicate-post": { "label": "Duplicar entrada / página / CPT", "description": "Copia cualquier entrada, página o elemento de CPT con sus metadatos y términos. Se guarda como borrador por defecto." },
   "ewpa/assign-post-terms": { "label": "Asignar términos a una entrada", "description": "Asigna términos de taxonomías personalizadas a una entrada o página." },
 

@@ -40,6 +40,8 @@
       { "key": "ewpa/reply-comment", "label": "Reply to Comment", "type": "write", "description": "Reply to an existing comment as the authenticated user." },
       { "key": "ewpa/update-comment", "label": "Update Comment", "type": "write", "description": "Update the content, author name, email, or linked user of a comment." },
       { "key": "ewpa/upload-image", "label": "Upload Image from URL", "type": "write", "description": "Download an image from a URL into the media library and return its attachment ID." },
+      { "key": "ewpa/create-upload-link", "label": "Create Upload Link", "type": "write", "description": "Get an image from the user's computer into the media library through a single-use link, without the file passing through the conversation." },
+      { "key": "ewpa/get-upload-status", "label": "Get Upload Status", "type": "read", "description": "Check whether the file for an upload link has arrived and get its attachment ID and URL." },
       { "key": "ewpa/duplicate-post", "label": "Duplicate Post / Page / CPT", "type": "write", "description": "Copy any post, page, or CPT item with its meta and terms. Saved as a draft by default." },
       { "key": "ewpa/assign-post-terms", "label": "Assign Post Terms", "type": "write", "description": "Assign custom taxonomy terms to a post or page." }
     ]
